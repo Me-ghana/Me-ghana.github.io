@@ -3,7 +3,7 @@ layout: post
 title: Coin Counting with the JeVois
 ---
 
--Add Info-
+Add Info
 
 This tutorial will help explain how to use OpenCV with a video stream to identify U.S. coins using image segmentation and blob detection.  I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  
 
