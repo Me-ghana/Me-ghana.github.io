@@ -10,13 +10,15 @@ I found the exercise of identifying U.S. coins to be a good introduction to some
 My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  Let's breakdown what the order of what we're going to do into five main steps:
 1. Read in our image
 2. Pre-process our image 
-3. Identify the regions of interest (ROI) which are the coins
-4. Identify each ROI as a particular coin 
-5. Computer the total value
+3. Identify the coins in the image as our ROIs
+4. Create a calibration file with current values for coin heuristics
+5. Identify each ROI as a particular coin using calibration data
+5. Compute the total value
 
+If you run into any issues, scroll down to check out some tourbleshooting tips!
 
 ### Step 1: Read in our image
-Step 1 is pretty simple, especially if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the very helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
+Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the very helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
 
 Here's the following code for reading in our image.  
 
