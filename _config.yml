@@ -3,14 +3,13 @@
 #
 
 # Name of your site (displayed in the header)
-name: Your Name
+name: Meghana's Site
 
 # Short bio or description (displayed in the header)
-description: Web Developer from Somewhere
+description: USC Computer Science 
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
-
+avatar: https://github.com/Me-ghana/Me-ghana.github.io/blob/master/images/spaceman.png
 #
 # Flags below are optional
 #
@@ -26,7 +25,7 @@ footer-links:
   linkedin:
   pinterest:
   rss: # just type anything here for a working RSS icon
-  twitter: jekyllrb
+  twitter: #jekyllrb
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
   youtube: # channel/<your_long_string> or user/<user-name>
   googleplus: # anything in your profile username that comes after plus.google.com/
