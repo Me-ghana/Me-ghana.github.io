@@ -14,11 +14,17 @@ My first goal was to see how well I could identify the four most common U.S. coi
 4. Identify each ROI as a particular coin 
 5. Computer the total value
 
-```python
-import libjevois as jevois
-import cv2
-import numpy as np
+
+###Step 1: Read in our image
+Step 1 is pretty simple, especially if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the very helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
+
+Here's the following code for reading in our image.  
+
+```python 
+    def process(self, inframe, outframe):
+        # Get the next camera image (may block until it is captured) and convert it to OpenCV BGR (for color output):
+        img = inframe.getCvBGR()
 ```
 
-If you want to learn more about the built-in JeVois functions, check out the very helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html). 
+
 
