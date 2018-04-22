@@ -123,4 +123,7 @@ Draw the keypoints as a blue line on the original image.  You can see that we ha
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins3.png" width = "450">
 </p>
 
+While we chose to use the simple blob detector, there are several other algorithms that we can have used instead.  It is interesting to take a look and see the different results that we get from these algorithms:
 
+1. Find Contours
+Instead of using the simple blob detector, we can use OpenCV's find contour algorithm.  Instead of applying multiple thresholds, we can automatically apply just one threshold with Otsu's Binarization, which finds the optimal thershold value in a bimodal distribution.  From there, we can find and draw 
