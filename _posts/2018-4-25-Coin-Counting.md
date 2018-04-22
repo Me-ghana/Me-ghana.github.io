@@ -36,6 +36,10 @@ In Step 2, we we get our first taste of OpenCV algorithms. This pre-processing w
 Let's continue our above code:
 
 ``` python
+    def __init__(self):
+        # Step 2
+        self.kernel = np.ones((5,5), np.uint8)
+        
     def process(self, inframe, outframe):
         # Step 1A 
         # Get the next camera image
@@ -70,3 +74,4 @@ In the first step of pre-processing, we use the OpenCV function convert color fu
 The .shape function will return only two values for a gray-scale image, the number of rows (height) and columns (width).  If you have a color image, .shape will return an additional channel value.
 
 **Step 2C**
+In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's filter operations.
