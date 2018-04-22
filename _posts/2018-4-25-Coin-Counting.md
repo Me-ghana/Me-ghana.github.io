@@ -125,5 +125,30 @@ Draw the keypoints as a blue line on the original image.  You can see that we ha
 
 While we chose to use the simple blob detector, there are several other algorithms that we can have used instead.  It is interesting to take a look and see the different results that we get from these algorithms:
 
-1. Find Contours
-Instead of using the simple blob detector, we can use OpenCV's find contour algorithm.  Instead of applying multiple thresholds, we can automatically apply just one threshold with Otsu's Binarization, which finds the optimal thershold value in a bimodal distribution.  From there, we can find and draw 
+Alternative #1: Find Contours
+
+An alternative is to use OpenCV's find contour algorithm to detect the coin outlines.  Instead of using the blob detector to apply multiple thresholds, we can automatically apply just one threshold with Otsu's Binarization, which finds the optimal thershold value in a bimodal distribution.  From there, we can find and draw the minimum enclosing circle.
+ 
+ ```python
+ # Apply automatic threshold
+ret, grayImage2 = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+# Find contours    
+im2, contours, hierarchy = cv2.findContours(grayImage2,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
+# Draw tightest enclosing circle for each contour
+for c in contours:
+	(x,y),radius = cv2.minEnclosingCircle(c)
+	center = (int(x),int(y))
+	radius = int(radius)
+	cv2.circle(img,center,radius,(255, 0, 0),1)
+```
+
+However, we can see this does not give us as tight as a circle:
+<p align="center">
+  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins4.png" width = "450">
+</p>
+
+Alternative #2: Hough Circles
+
+The 
