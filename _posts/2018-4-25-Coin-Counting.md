@@ -29,6 +29,10 @@ Here's the following code for reading in our image.
         # Convert it to OpenCV BGR (for color output):
         img = inframe.getCvBGR()
 ```
+Here's an image I read in on my video stream.  I'm using a resolution of 640 X 480.  We'll see how it changes as we go through each step.
+
+![]({{ site.baseurl }}Coin-Counter/master/CoinImages/CoinStep1.png)
+
 
 ### Step 2: Pre-process our image
 In Step 2, we we get our first taste of OpenCV algorithms. This pre-processing was adapted from the [JeVois Python Dice Tutorial](http://jevois.org/tutorials/ProgrammerPythonDice.html).  
