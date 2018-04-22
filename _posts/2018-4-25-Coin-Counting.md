@@ -61,7 +61,7 @@ Let's continue our above code:
         grayImage = cv2.GaussianBlur(grayImage, (5, 5), 0, 0)
         
         # Apply automatic threshold
-        ret, grayImage = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        ret, grayImage = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         
         
 ```
@@ -107,10 +107,20 @@ We'll instantiate a simple blob detector in our constructor in order to identify
         keypoints = self.detector.detect(invBack2)
         nrOfBlobs = len(keypoints)
         
+        # Step 3C
         # Draw keypoints
         im_with_keypoints = cv2.drawKeypoints(img, keypoints, np.array([]), (255, 0, 0),
                                               cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
 ```
-        
-```
+**Step 3A & 3B**
+Instantiate a simple blob detector in the constructor and filter by circularity. Set a minimum area to limit inclusion of artifacts. Use the gray-scaled and de-noised image to detect the keypoints, and save the number of blobs found.
+
+**Step 3C**
+Draw the keypoints as a blue line on the original image.  You can see that we have successfully identified each coin. 
+
+<p align="center">
+  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins3.png" width = "450">
+</p>
+
+
