@@ -41,10 +41,6 @@ In Step 2, we we get our first taste of OpenCV algorithms. This pre-processing w
 Let's continue our above code:
 
 ``` python
-    def __init__(self):
-        # Step 2
-        self.kernel = np.ones((5,5), np.uint8)
-        
     def process(self, inframe, outframe):
         # Step 1A 
         # Get the next camera image
@@ -65,11 +61,8 @@ Let's continue our above code:
         grayImage = cv2.GaussianBlur(grayImage, (5, 5), 0, 0)
         
         # Apply automatic threshold
-        ret, grayImage = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        ret, grayImage = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
         
-        # Background area
-        # grayImage = cv2.dilate(grayImage, self.kernel, iterations = 1) #self.morphBNo2)
-        invBack2 = 255 - grayImage
         
 ```
 **Step 2A** 
@@ -82,4 +75,9 @@ The .shape function will return only two values for a gray-scale image, the numb
 In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image.  This smoothing process recomputes a pixel's value by taking a weighted sum of the neighboring pixels.  Since we are using the Gaussian blur, as spatially more distant pixels are weighted less.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's image smoothing operations.
 
 **Step 2D**
+In this tep, we make our gray-scale image black and white by choosing a threshold using Otsu's Method.  This algorithm finds the optimal threshold value in a bimodal image. In this example, we are using a white background and the coins are darker.  We want to coins to be white and the background to be black, so we use the inverse method provided by OpenCV.  (Later on, we can add a simple function to determine the background color to see if the inverse method should be used or not.)
 
+Here's what our image looks like after thresholding:
+<p align="center">
+  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png" width = "450">
+</p>
