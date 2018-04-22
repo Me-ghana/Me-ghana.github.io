@@ -79,5 +79,5 @@ In this tep, we make our gray-scale image black and white by choosing a threshol
 
 Here's what our image looks like after thresholding:
 <p align="center">
-  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png" width = "450">
+  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins2.png" width = "450">
 </p>
