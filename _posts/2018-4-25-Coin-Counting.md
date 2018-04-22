@@ -10,7 +10,7 @@ I found the exercise of identifying U.S. coins to be a good introduction to some
 My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have five main steps:
 1. Read in our image
 2. Pre-process our image 
-3. Identify the coins in the image as our ROIs
+3. Identify coins with blob detection
 4. Create a calibration file with current values for coin heuristics
 5. Identify each ROI as a particular coin using calibration data
 5. Compute the total value
@@ -36,7 +36,7 @@ Here's an image I read in on my video stream.  I'm using a resolution of 640 X 4
 </p>
 
 ### Step 2: Pre-process our image
-In Step 2, we we get our first taste of OpenCV algorithms. This pre-processing was adapted from the [JeVois Python Dice Tutorial](http://jevois.org/tutorials/ProgrammerPythonDice.html).  
+In Step 2, we get our first taste of OpenCV algorithms. This pre-processing was adapted from the [JeVois Python Dice Tutorial](http://jevois.org/tutorials/ProgrammerPythonDice.html).  
 
 Let's continue our above code:
 
@@ -72,7 +72,7 @@ In the first step of pre-processing, we use the OpenCV function convert color fu
 The .shape function will return only two values for a gray-scale image, the number of rows (height) and columns (width).  If you have a color image, .shape will return an additional channel value.
 
 **Step 2C**
-In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image.  This smoothing process recomputes a pixel's value by taking a weighted sum of the neighboring pixels.  Since we are using the Gaussian blur, as spatially more distant pixels are weighted less.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's image smoothing operations.
+In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image.  This smoothing process recomputes a pixel's value by taking a weighted sum of the neighboring pixels.  Since we are using the Gaussian blur, spatially more distant pixels are weighted less.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's image smoothing operations.
 
 **Step 2D**
 In this tep, we make our gray-scale image black and white by choosing a threshold using Otsu's Method.  This algorithm finds the optimal threshold value in a bimodal image. In this example, we are using a white background and the coins are darker.  We want to coins to be white and the background to be black, so we use the inverse method provided by OpenCV.  (Later on, we can add a simple function to determine the background color to see if the inverse method should be used or not.)
@@ -81,3 +81,36 @@ Here's what our image looks like after thresholding:
 <p align="center">
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins2.png" width = "450">
 </p>
+
+### Step 3: Identify coins with blob detection
+We'll instantiate a simple blob detector in our constructor in order to identify coins in our image.  The simple blob detector algorithm works by thresholding the image into not just one, but several binary images, extractubg connected white pixels in each binary image with findContours, and finally merging blobs that have centers close to one another.  You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
+
+``` python
+# Step 3A
+## Constructor
+    def __init__(self):
+        # Instantiate a circular blob detector:
+        params = cv2.SimpleBlobDetector_Params()
+        params.filterByCircularity = True
+        params.filterByArea = True
+        params.minArea = 200.0
+        self.detector = cv2.SimpleBlobDetector_create(params)
+        
+    def process(self, inframe, outframe):
+        # Step 1A 
+        # Step 2A
+        # Step 2B
+        # Step 2C
+        
+        # Step 3B
+        # Blob detection
+        keypoints = self.detector.detect(invBack2)
+        nrOfBlobs = len(keypoints)
+        
+        # Draw keypoints
+        im_with_keypoints = cv2.drawKeypoints(img, keypoints, np.array([]), (255, 0, 0),
+                                              cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+```
+        
+```
