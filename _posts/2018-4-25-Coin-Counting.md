@@ -13,7 +13,7 @@ My first goal was to see how well I could identify the four most common U.S. coi
 3. Identify coins with blob detection
 4. Create a calibration file with current values for coin heuristics
 5. Identify each ROI as a particular coin using calibration data
-5. Compute the total value
+6. Compute the total value
 
 If you run into any issues, scroll down to check out some tourbleshooting tips!
 
@@ -123,7 +123,7 @@ Draw the keypoints as a blue line on the original image.  You can see that we ha
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins3.png" width = "450">
 </p>
 
-While we chose to use the simple blob detector, there are several other algorithms that we can have used instead.  It is interesting to take a look and see the different results that we get from these algorithms:
+While we chose to use the simple blob detector, there are several other algorithms that we can have used instead.  If you're not interested in hearing about the alternatives, skip ahead to Step 4.  
 
 Alternative #1: Find Contours
 
@@ -150,5 +150,13 @@ However, we can see this does not give us as tight as a circle:
 </p>
 
 Alternative #2: Hough Circles
+Alternative #2: The Watershed Algorithm
 
-The 
+
+
+### Step 4: Create a calibration file with current values for coin heuristics
+In this project, we are attempting to use basic image processing to identify U.S. Coins.  Two simple heuristics we can use are coin size and color.  First, let's check to see if it is possible to use these heuristics to tell U.S. Coins apart.
+
+
+
+Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.    
