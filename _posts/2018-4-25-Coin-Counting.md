@@ -31,7 +31,38 @@ Here's the following code for reading in our image.
 ```
 
 ### Step 2: Pre-process our image
-In Step 2, we we get our first taste of OpenCV algorithms. 
+In Step 2, we we get our first taste of OpenCV algorithms. This pre-processing was adapted from the [JeVois Python Dice Tutorial](http://jevois.org/tutorials/ProgrammerPythonDice.html).  
 
+Let's continue our above code:
 
+``` python
+    def process(self, inframe, outframe):
+        # Step 1A 
+        # Get the next camera image
+        # May block until it is captured
+        # Convert it to OpenCV BGR (for color output):
+        img = inframe.getCvBGR()
 
+        # Step 2A
+        # Also convert it to grayscale for processing:
+        grayImage = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
+        # Step 2B
+        # Get image width, height:
+        height, width = grayImage.shape
+
+        # Step 2C
+        # Filter noise
+        grayImage = cv2.GaussianBlur(grayImage, (5, 5), 0, 0)
+        
+        # Apply automatic threshold
+        ret, grayImage = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        
+        # Background area
+        # grayImage = cv2.dilate(grayImage, self.kernel, iterations = 1) #self.morphBNo2)
+        invBack2 = 255 - grayImage
+        
+```
+Step 2A: In the first step of pre-processing, we use the OpenCV function convert color function to make our image gray-scale.  [Here](https://docs.opencv.org/3.2.0/de/d25/imgproc_color_conversions.html) is a list of all the possible color converstions - this will come in helpful later if you want to use a different model, like HSV, for identifying coin types. In OpenCV, the channels are in Blue, Green, Red (BGR) order, nor the more common RGB. 
+Step 2B: The .shape function will return only two values for a gray-scale image, the number of rows (height) and columns (width).  If you have a color image, .shape will return an additional channel value.
+Step 2C: 
