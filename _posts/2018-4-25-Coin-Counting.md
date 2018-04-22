@@ -3,11 +3,11 @@ layout: post
 title: Coin Counting with the JeVois in Python
 ---
 
-This tutorial will help explain how to use OpenCV with a video stream to identify U.S. coins with Python using image segmentation and blob detection.  
+This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV.  
 
-I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, to count U.S. coins, you can use any video stream that is read image by image.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
+I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  The final code uses blob detection, but we'll explore other algorhtms such as Hough Circles and the Watershed algorithm, along the way.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, to count U.S. coins, you can use any video stream that is read image by image.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
 
-My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  Let's breakdown what the order of what we're going to do into five main steps:
+My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have five main steps:
 1. Read in our image
 2. Pre-process our image 
 3. Identify the coins in the image as our ROIs
@@ -18,11 +18,11 @@ My first goal was to see how well I could identify the four most common U.S. coi
 If you run into any issues, scroll down to check out some tourbleshooting tips!
 
 ### Step 1: Read in our image
-Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the very helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
+Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
 
 Here's the following code for reading in our image.  
 
-``` 
+``` python
     def process(self, inframe, outframe):
         # Get the next camera image
         # May block until it is captured
