@@ -32,8 +32,7 @@ Here's the following code for reading in our image.
 Here's an image I read in on my video stream.  I'm using a resolution of 640 X 480.  We'll see how it changes as we go through each step.
 
 <p align="center">
-  <img />
-![1](https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png)
+  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png">
 </p>
 
 ### Step 2: Pre-process our image
