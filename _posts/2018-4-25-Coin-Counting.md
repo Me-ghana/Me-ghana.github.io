@@ -23,11 +23,11 @@ Step 1 is pretty simple if you are using the JeVois. If you want to learn more a
 Here's the following code for reading in our image.  
 
 ``` python
-    1 def process(self, inframe, outframe):
-    2    # Get the next camera image
-    3    # May block until it is captured
-    4    # Convert it to OpenCV BGR (for color output):
-    5    img = inframe.getCvBGR()
+    def process(self, inframe, outframe):
+        # Get the next camera image
+        # May block until it is captured
+        # Convert it to OpenCV BGR (for color output):
+        img = inframe.getCvBGR()
 ```
 
 ### Step 2: Pre-process our image
