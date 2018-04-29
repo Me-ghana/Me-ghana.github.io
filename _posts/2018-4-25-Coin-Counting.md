@@ -155,18 +155,23 @@ However, we can see this does not give us as tight as a circle:
 ###### Alternative #2: Hough Circles
 Hough Circles is a specialization of the Hough Transform, and is a popular choice for detecting circles in images.  OpenCV uses the Hough Gradient Method for detection.  It is similar to the Hough Line Transform OpenCV operation.  The algorithm is explained [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html) and a python tutorial for Hough Circles is provided by OpenCV [here](http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_houghcircles/py_houghcircles.html).
 
-We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles.  As you can see, it does a pretty good job - however, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier.  If you using static images, or have a very steady video stream, Hough Circles is a great option. 
-
-[![Alt text](https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg)](https://www.youtube.com/watch?v=lPb4vpTNWcI)
-
+We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles.  As you can see, it does a pretty good job and is even able to detect coins that are overlapping. However, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier.  If you using static images, or have a very steady video stream, Hough Circles is a great option. 
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=lPb4vpTNWcI"><img src="https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg" alt="IMAGE ALT TEXT"></a>
 </div>
 
 ###### Alternative #2: The Watershed Algorithm
+The watershed algorithm is an intuitive method to identify circles.  The idea is that an image can be treated like a topographic map, with valleys separating low points.  If  the center of each coin is the low point in the map, we can fill the valley of each lowpoint with a unique color of water.  The boundaries of each coin are indicated where different water colors merge.  
 
+<p align="center">
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater.png" width = "200">
+	<figcaption>Watershed Boundaries</figcaption>
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater.png" width = "200">
+	<figcaption>Final Circles</figcaption>
+</p>
 
+This is a great way to identify overlapping regions.  
 
 ### Step 4: Create a calibration file with current values for coin heuristics
 In this project, we are attempting to use basic image processing to identify U.S. Coins.  Two simple heuristics we can use are coin size and color.  First, let's check to see if it is possible to use these heuristics to tell U.S. Coins apart.
