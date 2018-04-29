@@ -85,7 +85,7 @@ Here's what our image looks like after thresholding:
 
 ### Step 3: Identify coins with blob detection
 We'll instantiate a simple blob detector in our constructor in order to identify coins in our image.  The simple blob detector algorithm works by:
-	1. thresholding the image into not just one, but several binary images, and then extracting connected pixels in each binary image with findContours, and finally merging blobs that have centers close to one another.  You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
+⋅⋅⋅1. thresholding the image into not just one, but several binary images, and then extracting connected pixels in each binary image with findContours, and finally merging blobs that have centers close to one another.  You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
 
 ``` python
 # Step 3A
