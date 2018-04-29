@@ -149,7 +149,7 @@ for c in contours:
 
 However, we can see this does not give us as tight as a circle:
 <p align="center">
-  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins4.png" width = "450">
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins4.png" width = "450">
 </p>
 
 ###### Alternative #2: Hough Circles
@@ -157,9 +157,9 @@ Hough Circles is a specialization of the Hough Transform, and is a popular choic
 
 We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles.  As you can see, it does a pretty good job - however, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier.  If you using static images, or have a very steady video stream, Hough Circles is a great option. 
 
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg)](https://www.youtube.com/watch?v=lPb4vpTNWcI)
-
+<p align="center">
+	[(https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg)](https://www.youtube.com/watch?v=lPb4vpTNWcI)
+</p>
 
 ###### Alternative #2: The Watershed Algorithm
 
