@@ -158,10 +158,8 @@ Hough Circles is a specialization of the Hough Transform, and is a popular choic
 We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles.  As you can see, it does a pretty good job - however, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier.  If you using static images, or have a very steady video stream, Hough Circles is a great option. 
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg)](https://www.youtube.com/watch?v=lPb4vpTNWcI)
 
-
-[![Alt text](https://img.youtube.com/embed/dQw4w9WgXcQ.jpg)](https://www.youtube.com/embed/dQw4w9WgXcQ)
 
 ###### Alternative #2: The Watershed Algorithm
 
