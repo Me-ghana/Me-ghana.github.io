@@ -76,7 +76,7 @@ The .shape function will return only two values for a gray-scale image, the numb
 In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image.  This smoothing process recomputes a pixel's value by taking a weighted sum of the neighboring pixels.  Since we are using the Gaussian blur, spatially more distant pixels are weighted less.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's image smoothing operations.
 
 **Step 2D**
-In this step, we make our gray-scale image black and white by choosing a threshold using Otsu's Method.  This algorithm finds the optimal threshold value in a bimodal image. In this example, we are using a white background and the coins are darker.  We want to coins to be black and the background to be white, so we use the inverse method provided by OpenCV.  This is because the Simple Blob Detector typically detects dark spots as blobs.  (Later on, we can add a simple function to determine the background color to see if the inverse method should be used or not automatically.)
+In this step, we make our gray-scale image black and white by choosing a threshold using Otsu's Method.  This algorithm finds the optimal threshold value in a bimodal image. In this example, we are using a white background and the coins are darker.  We want to coins to be black and the background to be white, so we use the inverse method provided by OpenCV.  This is because the simple blob detector typically detects dark spots as blobs.  (Later on, we can add a simple function to determine the background color to see if the inverse method should be used or not automatically.)
 
 Here's what our image looks like after thresholding:
 <p align="center">
@@ -87,8 +87,7 @@ Here's what our image looks like after thresholding:
 We'll instantiate a simple blob detector in our constructor in order to identify coins in our image.  The simple blob detector algorithm works by:
    1. Thresholding the image into not just one, but several binary images
    2. Extracting connected pixels in each binary image with findContours 
-   3. Finally merging blobs that have centers close to one another  
-You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
+   3. Finally merging blobs that have centers close to one another. You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
 
 ``` python
 # Step 3A
@@ -130,8 +129,7 @@ Draw the keypoints as a blue line on the original image.  You can see that we ha
 
 While we chose to use the simple blob detector, there are several other algorithms that we can have used instead.  If you're not interested in hearing about the alternatives, skip ahead to Step 4.  
 
-Alternative #1: Find Contours
-
+######Alternative #1: Find Contours
 An alternative is to use OpenCV's find contour algorithm to detect the coin outlines.  Instead of using the blob detector to apply multiple thresholds, we can automatically apply just one threshold with Otsu's Binarization, which finds the optimal thershold value in a bimodal distribution.  From there, we can find and draw the minimum enclosing circle.
  
  ```python
@@ -154,8 +152,18 @@ However, we can see this does not give us as tight as a circle:
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins4.png" width = "450">
 </p>
 
-Alternative #2: Hough Circles
-Alternative #2: The Watershed Algorithm
+######Alternative #2: Hough Circles
+Hough Circles is a specialization of the Hough Transform, and is a popular choice for detecting circles in images.  OpenCV uses the Hough Gradient Method for detection.  It is similar to the Hough Line Transform OpenCV operation.  The algorithm is explained [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html) and a python tutorial for Hough Circles is provided by OpenCV [here](http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_houghcircles/py_houghcircles.html).
+
+We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles.  As you can see, it does a pretty good job - however, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier.  If you using static images, or have a very steady video stream, Hough Circles is a great option. 
+
+<p align="center">
+	<iframe width="420" height="345" src="https://www.youtube.com/watch?v=lPb4vpTNWcI&feature=youtu.be">
+	</iframe>
+</p>
+
+
+######Alternative #2: The Watershed Algorithm
 
 
 
