@@ -165,14 +165,13 @@ We can see that we get better performance with Hough Circles than with the find 
 The watershed algorithm is an intuitive method to identify circles.  The idea is that an image can be treated like a topographic map, with valleys separating low points.  If  the center of each coin is the low point in the map, we can fill the valley of each lowpoint with a unique color of water.  The boundaries of each coin are indicated where different water colors merge.  
 
 <p align="center">
-	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater.png" width = "450"><figcaption>Watershed Boundaries</figcaption>
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinsAltWater.png" width = "450"><div align = "center"><figcaption>Watershed Boundaries</figcaption></div>
 </p>
 <p align="center">
-	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater2.png" width = "450"><figcaption>Final Circles</figcaption>
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinsAltWater2.png" width = "450"><div align = "center"><figcaption>Final Circles</figcaption></div>
 </p>
 
-
-This is a great way to identify overlapping regions.  
+This is a great way to identify overlapping regions.  However, it  doesn't give us the tightest circles we've seen so far. This implemetnation of the watershed algorithm relies on a series of dilations and erosions to identify the low points, and this also reduces the accuracy of the final circle.    
 
 ### Step 4: Create a calibration file with current values for coin heuristics
 In this project, we are attempting to use basic image processing to identify U.S. Coins.  Two simple heuristics we can use are coin size and color.  First, let's check to see if it is possible to use these heuristics to tell U.S. Coins apart.
