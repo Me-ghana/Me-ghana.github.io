@@ -11,7 +11,7 @@ My first goal was to see how well I could identify the four most common U.S. coi
 1. Read in our image
 2. Pre-process our image 
 3. Identify coins with blob detection
-4. Create a calibration file with current values for coin heuristics
+4. Create a calibration file with values for coin heuristics
 5. Identify each ROI as a particular coin using calibration data
 6. Compute the total value
 
@@ -29,7 +29,7 @@ Here's the following code for reading in our image.
         # Convert it to OpenCV BGR (for color output):
         img = inframe.getCvBGR()
 ```
-Here's an image I read in on my video stream.  I'm using a resolution of 640 X 480.  We'll see how it changes as we go through each step.
+Here's an image I read in on my video stream.  I'm using a resolution of 640X480.  We'll see how this image changes as we go through each step.
 
 <p align="center">
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png" width = "450">
@@ -60,13 +60,14 @@ Let's continue our above code:
         # Filter noise
         grayImage = cv2.GaussianBlur(grayImage, (5, 5), 0, 0)
         
+	# Step 2D
         # Apply automatic threshold
         ret, grayImage = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         
         
 ```
 **Step 2A** 
-In the first step of pre-processing, we use the OpenCV function convert color function to make our image gray-scale.  [Here](https://docs.opencv.org/3.2.0/de/d25/imgproc_color_conversions.html) is a list of all the possible color converstions - this will come in helpful later if you want to use a different model, like HSV, for identifying coin types. In OpenCV, the channels are in Blue, Green, Red (BGR) order, nor the more common RGB. 
+In the first step of pre-processing, we use the OpenCV function convert color function to make our image gray-scale.  [Here](https://docs.opencv.org/3.2.0/de/d25/imgproc_color_conversions.html) is a list of all the possible color converstions - this will come in helpful later if you want to use a different model, like HSV, for identifying coin types. In OpenCV, the channels are in Blue, Green, Red (BGR) order, not the more common RGB. We'll talk more about HSV vs BGR later on. 
 
 **Step 2B** 
 The .shape function will return only two values for a gray-scale image, the number of rows (height) and columns (width).  If you have a color image, .shape will return an additional channel value.
@@ -75,15 +76,16 @@ The .shape function will return only two values for a gray-scale image, the numb
 In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image.  This smoothing process recomputes a pixel's value by taking a weighted sum of the neighboring pixels.  Since we are using the Gaussian blur, spatially more distant pixels are weighted less.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's image smoothing operations.
 
 **Step 2D**
-In this tep, we make our gray-scale image black and white by choosing a threshold using Otsu's Method.  This algorithm finds the optimal threshold value in a bimodal image. In this example, we are using a white background and the coins are darker.  We want to coins to be white and the background to be black, so we use the inverse method provided by OpenCV.  (Later on, we can add a simple function to determine the background color to see if the inverse method should be used or not.)
+In this step, we make our gray-scale image black and white by choosing a threshold using Otsu's Method.  This algorithm finds the optimal threshold value in a bimodal image. In this example, we are using a white background and the coins are darker.  We want to coins to be black and the background to be white, so we use the inverse method provided by OpenCV.  This is because the Simple Blob Detector typically detects dark spots as blobs.  (Later on, we can add a simple function to determine the background color to see if the inverse method should be used or not automatically.)
 
 Here's what our image looks like after thresholding:
 <p align="center">
-  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins2.png" width = "450">
+  <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins2D.png" width = "450">
 </p>
 
 ### Step 3: Identify coins with blob detection
-We'll instantiate a simple blob detector in our constructor in order to identify coins in our image.  The simple blob detector algorithm works by thresholding the image into not just one, but several binary images, extractubg connected white pixels in each binary image with findContours, and finally merging blobs that have centers close to one another.  You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
+We'll instantiate a simple blob detector in our constructor in order to identify coins in our image.  The simple blob detector algorithm works by:
+	1. thresholding the image into not just one, but several binary images, and then extracting connected pixels in each binary image with findContours, and finally merging blobs that have centers close to one another.  You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
 
 ``` python
 # Step 3A
@@ -160,3 +162,10 @@ In this project, we are attempting to use basic image processing to identify U.S
 
 
 Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.    
+
+
+
+
+
+
+ HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value.  
