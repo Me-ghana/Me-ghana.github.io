@@ -165,11 +165,12 @@ We can see that we get better performance with Hough Circles than with the find 
 The watershed algorithm is an intuitive method to identify circles.  The idea is that an image can be treated like a topographic map, with valleys separating low points.  If  the center of each coin is the low point in the map, we can fill the valley of each lowpoint with a unique color of water.  The boundaries of each coin are indicated where different water colors merge.  
 
 <p align="center">
-	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater.png" width = "200">
-	<figcaption>Watershed Boundaries</figcaption>
-	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater.png" width = "200">
-	<figcaption>Final Circles</figcaption>
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater.png" width = "450"><figcaption>Watershed Boundaries</figcaption>
 </p>
+<p align="center">
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinAltWater2.png" width = "450"><figcaption>Final Circles</figcaption>
+</p>
+
 
 This is a great way to identify overlapping regions.  
 
