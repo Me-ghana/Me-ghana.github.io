@@ -129,7 +129,7 @@ Draw the keypoints as a blue line on the original image.  You can see that we ha
 
 While we chose to use the simple blob detector, there are several other algorithms that we can have used instead.  If you're not interested in hearing about the alternatives, skip ahead to Step 4.  
 
-######Alternative #1: Find Contours
+###### Alternative #1: Find Contours
 An alternative is to use OpenCV's find contour algorithm to detect the coin outlines.  Instead of using the blob detector to apply multiple thresholds, we can automatically apply just one threshold with Otsu's Binarization, which finds the optimal thershold value in a bimodal distribution.  From there, we can find and draw the minimum enclosing circle.
  
  ```python
