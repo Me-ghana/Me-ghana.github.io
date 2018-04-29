@@ -161,7 +161,7 @@ We can see that we get better performance with Hough Circles than with the find 
 
 
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE"><img src="https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" alt="IMAGE ALT TEXT"></a>
+  <a href="https://www.youtube.com/watch?v=lPb4vpTNWcI"><img src="https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg" alt="IMAGE ALT TEXT"></a>
 </div>
 
 ###### Alternative #2: The Watershed Algorithm
