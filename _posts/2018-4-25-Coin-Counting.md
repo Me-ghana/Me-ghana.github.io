@@ -7,13 +7,14 @@ This tutorial will help explain how to identify U.S. coins from a video stream w
 
 I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  The final code uses blob detection, but we'll explore other algorithms such as Hough Circles and the Watershed algorithm along the way.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, you can use any video stream you can extract images from.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
 
-My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have five main steps:
+My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have seven steps:
 1. Read in our image
 2. Pre-process our image 
 3. Identify coins with blob detection
-4. Create a calibration file with values for coin heuristics
-5. Identify each ROI as a particular coin using calibration data
-6. Compute the total value
+4. Determine the heuristics and color space 
+5. Create a calibration file 
+6. Identify each ROI as a particular coin using calibration data
+7. Compute the total value
 
 If you run into any issues, scroll down to check out some tourbleshooting tips!
 
