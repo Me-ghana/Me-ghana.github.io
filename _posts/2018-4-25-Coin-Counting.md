@@ -160,6 +160,7 @@ We can see that we get better performance with Hough Circles than with the find 
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=lPb4vpTNWcI"><img src="https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg" alt="IMAGE ALT TEXT"></a>
+	<div align = "center"><figcaption>Click image watch video</figcaption></div>
 </div>
 
 ###### Alternative #2: The Watershed Algorithm
@@ -174,16 +175,25 @@ The watershed algorithm is an intuitive method to identify circles.  The idea is
 
 This is a great way to identify overlapping regions.  However, it  doesn't give us the tightest circles we've seen so far. This implemetnation of the watershed algorithm relies on a series of dilations and erosions to identify the low points, and this also reduces the accuracy of the final circle.    
 
-### Step 4: Create a calibration file with current values for coin heuristics
+### Step 4: Determine the heuristics and color space
+**Note: You do not need to do this step yourself if you merely want to use the algorithm.  However, if you're interested in finding your own heuristics, you can read this and follow the method I outline below**
+
 In this project, we are attempting to use basic image processing to identify U.S. Coins.  Two simple heuristics we can use are coin size and color.  First, let's check to see if it is possible to use these heuristics to tell U.S. Coins apart.
+
+**Step 4A**
+I wanted to create probability distrbiutions for coin color and size.  The most similar in size is the penny and the dime. I went to the bank and got about 400 of each type of coin (I also got a few weird looks from the bank tellers). If we can tell these two coins apart with a combination of size and color heuristics, we can be fairly confident that we can tell the nickel and quarter apart as well.  
+
+**Step 4B**
+Let's first look at the radius data.  Using the JeVois, I used the "screen capture" to capture images of coins in the video screen.  I imaged about 30 coins at a time, and used the simple blob detector method to extract each coin area.  This method had a 96% accuracy of correctly finding the coin boundaries.  (Sometimes coins near the edge of the camera, and coins that I had not completely separated, were not identified correctly).  I recorded the radius, R, G, and B values for each coin.
+
+<p align = "center">
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/PennyData.jpg" width = "450"><div align = "center"><figcaption>An example of an image used for penny data gathering</figcaption></div>
+</p>
+
 
 
 
 Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.    
-
-
-
-
 
 
  HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value.  
