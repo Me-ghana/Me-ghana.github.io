@@ -194,20 +194,69 @@ Let's first look at the radius data.  Using the JeVois, I used the "screen captu
 <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
 </p>
 
+From this graph, it's clear we cannot rely on size alone to differentiate pennies from dimes.  
 
-From this graph, it's clear we cannot rely on size alone to differentiate pennies from dimes.  If you do a similar exercise with R, G, and B channels, you'll again find the overlap is quite large.  However, here's the distribution for the R:B ratio for pennies and dimes:
+**Step 4C**
+If you do a similar exercise with R, G, and B channels, you'll again find the overlap is quite large.  However, here's the distribution for the R:B ratio for pennies and dimes:
 
 <p align = "center">
 <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart2.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
 </p>
 
-We can see a clear separation between the distribution to R:B values in the dimes and the pennies!  We can assume this would also be true of pennies vs nickels or quarters. This is a good time to discuss RGB vs HSV.  HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value. I first tried HSV values for this exercise, but found the R:B separation was the best.  As a result, we'll proceed with working the in the RGB space.
+We can see a clear separation between the distribution to R:B values in the dimes and the pennies!  We can assume this would also be true of pennies vs nickels or quarters. This is a good time to discuss RGB vs HSV.  HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value. I first tried HSV values for this exercise, but found the R:B separation was the best.  As a result, I'll proceed with working the in the RGB space.  
 
 
-With similar distributions, I was able to find adequate separation between (1) pennies and nickels, and (2) nickels and quarters.  While there was some overlap (<15%) in both cases, let's proceed and see how well our coin counter does.
+With similar distributions, I was able to find adequate separation between (1) pennies and nickels radii, and (2) nickels and quarters radii.  While there was some overlap (<15%) in both cases, let's proceed and see how well our coin counter does.
+
+### Step 5: Create a calibration file
+Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.  We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space.  Let's continue the code from earlier:
 
 
-Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.    
-
+``` python
+# Step 3A
+## Constructor
+    def __init__(self):
+        # Instantiate a circular blob detector:
+        params = cv2.SimpleBlobDetector_Params()
+        params.filterByCircularity = True
+        params.filterByArea = True
+        params.minArea = 200.0
+        self.detector = cv2.SimpleBlobDetector_create(params)
+        
+    def process(self, inframe, outframe):
+        # Step 1A 
+        # Step 2A
+        # Step 2B
+        # Step 2C
+        # Step 3B
+        # Step 3C
+        # Draw keypoints
+        im_with_keypoints = cv2.drawKeypoints(img, keypoints, np.array([]), (255, 0, 0),
+                                              cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+					      
+					  
+        # Step 5A
+	# Instantiate the coordinates of where you will be directing the user to place coins
+	xVal = 80
+        yVal = 300
+	# Instantiate the distances between coins
+	xDelta = 140
+	# Instantiate the distances between the coins and the text directing the user
+	yDelta = -100
+	
+	# Step 5B
+	# Create a loop that iterates once for each detected blob
+        for x in range(0,len(keypoints)):
+            # Draw a green border around the detected blob
+            im_with_keypoints=cv2.circle(im_with_keypoints, (np.int(keypoints[x].pt[0]),np.int(keypoints[x].pt[1])),
+	    radius=np.int(keypoints[x].size/2), color=(0,0,255), thickness=2) 
+	    
+	    # Step 5C
+	    # Call the "detectCoinType" function
+            im_with_keypoints = self.detectCoinType(im_with_keypoints,
+	    np.int(keypoints[x].pt[0]),np.int(keypoints[x].pt[1]), xVal + 20 , yVal + yDelta, xDelta,
+	    np.int(keypoints[x].size/2))
+	
+```
 
   
