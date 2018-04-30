@@ -263,10 +263,14 @@ Let's continue the code from earlier:
             im_with_keypoints = self.detectCoinType(im_with_keypoints,
 	    np.int(keypoints[x].pt[0]),np.int(keypoints[x].pt[1]), xVal + 20 , yVal + yDelta, xDelta,
 	    np.int(keypoints[x].size/2))
-	
-	# Step 5D
-	# Convert our BGR image to video output format and send to host over USB:
-        im_with_keypoints = self.imageText(im_with_keypoints, xVal, yVal, xDelta, yDelta)
+	    
+	    
+	# Step 5D & 6B
+	# Add text on the image to make more user-friendly
+	im_with_keypoints = self.imageText(im_with_keypoints, xVal, yVal, xDelta, yDelta)
+
+	# Step 5E
+	# Convert our BGR image to video output format and send to host over USB
         outframe.sendCvBGR(im_with_keypoints)
 ```
 
@@ -274,15 +278,17 @@ Let's continue the code from earlier:
 
 **Step 5B** This loop should iterate four times, one for each coin.  A green circlular border will be drawn around each coin.
 
-**Step 5C** The whole point of the calibration step is to store the heuristic data for each coin type in a file. The "detectCoinType" function will do that.   We'll talk more about this function soon!
+**Step 5C** The whole point of the calibration step is to store the heuristic data for each coin type in a file. The "detectCoinType" function will do that.   See part 6 for more.
+
+**Step 5D** We add text to the image to make the calibration portion more user-friendly.  See part 6 for more.
  
 **Step 5D** The program is complete.  At this point, if you are using a JeVois, you would send the altered image out to be displayed on the video interface.
 
 ### Step 6: Write calibration code helper functions (optional)
 Let's take a look at all the helper functions we use in this code, starting with the "detectCoinType" function.  
 
-
-Let's take a look at the "detectCoinType" function:
+**Step 6A: detectCoinType**
+The "detectCoinType" function determines which marker is closest to the coin.  Since we have already determined the order of the markers (leftmost marker being 0 and rightmost being 3), we will know which coins we have detected.  We then write out the color information and radius of the detected coin to the matching text file for that coin.  The main coin counting program will then use this file to help tell coins apart. 
 
 ```python
      ## Function determines if detected circle represents Penny, Nickel, Quarter or Dime
@@ -372,4 +378,75 @@ Let's take a look at the "detectCoinType" function:
 	# In this case, no coin was detected within 30% of a marker
         return image
 ```
+
+**Step 6B: imageText**
+This is a simple function which adds text to the image to help the user know where to place which coin.  For example, the user should place a dime on the red "x" with the word "dime" in red underneat the "x".  See the video in Part 5 to get an idea of what the end result should be.
+
+```python
+	
+	# Add title and istruction
+        cv2.putText(image, "COIN CALIBRATION", (20, 20), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(image, "Center the corresponding coin at each X",(20, 40), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        
+	# Add coin names from left to right on the screen
+        cv2.putText(image, "Dime", (xVal, yVal), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(image, "Penny", (xVal + xDelta, yVal), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(image, "Nickel", (xVal + 2*xDelta, yVal), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(image, "Quarter", (xVal + 3*xDelta, yVal), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+          
+	# Add "X"s where coins should be placed from left to right
+        cv2.putText(image, "X", (xVal + 20, yVal + yDelta), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(image, "X", (xVal + xDelta + 20, yVal + yDelta), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(image, "X", (xVal + 2*xDelta + 20, yVal + yDelta), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        cv2.putText(image, "X", (xVal + 3*xDelta + 20, yVal + yDelta), \
+               cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+	       
+        return image
+```
+
+
+**Step 6B: printCoinType**
+This is another simple function which returns the type of the coin detected based on its closest marker.     
+
+```python
+    def printCoinType(self, type):
+        if type == 0:
+            coin = 'Dime'
+        if type == 1:
+            coin = 'Penny'
+        if type == 2:
+            coin = 'Nickel'
+        if type == 3:
+            coin = 'Quarter'
+        return coin
+```
+**Step 6C: writeToFile**
+This is our last helper function!  Here, we write out to three files for each coin, storing the R:G, R:B, and radius information.   Note that since we are appending infromation to the end of the file, the user will have to go in and delete the files completely if they want to start collecting calibration data for a new environment.  A future imrpovement may be to clear the file after reaching a certain number of lines, so that files can be completely updated by running the calibration program for a given amount of time.
+
+```python
+    def writeToFile(self,ratioRG,ratioRB,radius,coin):
+        fo = open("/jevois/data/" + coin+"_RG.txt","a")
+        fo.write(str(ratioRG) + "\n")
+        fo.close()
+
+        fo = open("/jevois/data/" + coin+"_RB.txt","a")
+        fo.write(str(ratioRB) + "\n")
+        fo.close()
+
+        fo = open("/jevois/data/" + coin+"_Radius.txt","a")
+        fo.write(str(radius) + "\n")
+        fo.close()  
+```
+We're finally done with the calibration program!  If you put steps 1-6 together, you should have a fully functional calibration program.  Now let's move on to the actual coin counting program.
+
+
 
