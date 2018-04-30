@@ -270,3 +270,76 @@ Since the size and the color will change depending on the distance the camera is
 **Step 5C** The whole point of the calibration step is to store the heuristic data for each coin type in a file. The "detectCoinType" function will do that.   We'll talk more about this function soon!
  
 **Step 5D** The program is complete.  At this point, if you are using a JeVois, you would send the altered image out to be displayed on the video interface.
+
+Let's take a look at the "detectCoinType" function:
+
+```python
+     ## Function determines if detected circle represents Penny, Nickel, Quarter or Dime
+     ## This is based on the (X,Y) coordinate (center needs to be within 15% of (X,Y) target)
+     ## Function returns the following values based on detected coin type:
+     ## Dime - 0
+     ## Penny - 1
+     ## Nickel - 2
+     ## Quarter - 3
+    def detectCoinType(self, image, circleCenterXCoord,circleCenterYCoord, \
+        targetXVal, targetYVal, xDelta, radius):  
+
+        height,width,depth = image.shape
+
+        PennyNum = 0
+        DimeNum = 0
+        NickelNum = 0
+        QuarterNum = 0
+
+        for i in range(0,4):
+           # Calculate % difference b/w center of detected circle and center of coin target
+            xDifference = abs(circleCenterXCoord-targetXVal)/targetXVal
+            yDifference = abs(circleCenterYCoord-targetYVal)/targetYVal
+
+            # If center of circle is close enough to target print out the type of coin on the image
+            if (xDifference < 0.3) and (yDifference < 0.3):
+                
+                # Call the printCoinType function to get the coin type
+                coin = self.printCoinType(i)
+
+
+
+                
+                # Get RGB values from coin
+                # Radius isn't a great way to distinguish between the coins, looking at RGB values is more helpful
+                # Specifically, looking at the R:G and R:B ratios helps distinguish pennies from the rest
+                # We use a circular area of half the radius of the coin with the same center to get the average RGB value
+                circle_img = np.zeros((height, width), np.uint8)
+                # Get a circle with half the radius of the coin with the same center
+                cv2.circle(circle_img, (circleCenterXCoord, circleCenterYCoord), int(radius/2), [255,255,255], -1)
+                circle_img = np.uint8(circle_img)
+                # Compute the mean RGB value in this circle
+                mean_val = cv2.mean(image, circle_img)[::-1]
+                temp = mean_val[1:]
+                red = temp[0]
+                green = temp[1]
+                blue = temp[2]
+                ratioRG = red/green
+                ratioRB = blue/green
+                rgbSqrd =  math.sqrt(red*red + blue*blue + green*green)
+
+                self.writeToFile(ratioRG,ratioRB,radius,coin)
+
+                cv2.putText(image, "RG " + str("%.2f" % ratioRG), (targetXVal, targetYVal - 105), \
+                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+                cv2.putText(image, "RB " + str("%.2f" % ratioRB), (targetXVal, targetYVal - 130), \
+                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+                cv2.putText(image, coin, (targetXVal, targetYVal - 60), \
+                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+                #get radius
+                cv2.putText(image, "radius " + str("%.2f" % radius), (targetXVal, targetYVal - 80), \
+                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+                return image
+
+            targetXVal = targetXVal + xDelta
+                
+        return image
+```
+
