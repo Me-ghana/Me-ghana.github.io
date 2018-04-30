@@ -187,11 +187,11 @@ I wanted to create probability distrbiutions for coin color and size.  The most 
 Let's first look at the radius data.  Using the JeVois, I used the "screen capture" to capture images of coins in the video screen.  I imaged about 30 coins at a time, and used the simple blob detector method to extract each coin area.  This method had a 96% accuracy of correctly finding the coin boundaries.  (Sometimes coins near the edge of the camera, and coins that I had not completely separated, were not identified correctly).  I recorded the radius, R, G, and B values for each coin.
 
 <p align = "center">
-<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/PennyData.jpg" width = "450"><div align = "center"><figcaption>An example of an image used for penny data gathering</figcaption></div>
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/PennyData.jpg" width = "600"><div align = "center"><figcaption>An example of an image used for penny data gathering</figcaption></div>
 </p>
 
 <p align = "center">
-<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart.png" width = "600"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
 </p>
 
 From this graph, it's clear we cannot rely on size alone to differentiate pennies from dimes.  
