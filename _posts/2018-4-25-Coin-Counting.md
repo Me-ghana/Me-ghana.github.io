@@ -190,10 +190,24 @@ Let's first look at the radius data.  Using the JeVois, I used the "screen captu
 <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/PennyData.jpg" width = "450"><div align = "center"><figcaption>An example of an image used for penny data gathering</figcaption></div>
 </p>
 
+<p align = "center">
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
+</p>
 
+
+From this graph, it's clear we cannot rely on size alone to differentiate pennies from dimes.  If you do a similar exercise with R, G, and B channels, you'll again find the overlap is quite large.  However, here's the distribution for the R:B ratio for pennies and dimes:
+
+<p align = "center">
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart2.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
+</p>
+
+We can see a clear separation between the distribution to R:B values in the dimes and the pennies!  We can assume this would also be true of pennies vs nickels or quarters. This is a good time to discuss RGB vs HSV.  HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value. I first tried HSV values for this exercise, but found the R:B separation was the best.  As a result, we'll proceed with working the in the RGB space.
+
+
+With similar distributions, I was able to find adequate separation between (1) pennies and nickels, and (2) nickels and quarters.  While there was some overlap (<15%) in both cases, let's proceed and see how well our coin counter does.
 
 
 Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.    
 
 
- HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value.  
+  
