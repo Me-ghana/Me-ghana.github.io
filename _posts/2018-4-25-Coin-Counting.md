@@ -12,9 +12,11 @@ My first goal was to see how well I could identify the four most common U.S. coi
 2. Pre-process our image 
 3. Identify coins with blob detection
 4. Determine the heuristics and color space 
-5. Create a calibration file 
-6. Identify each ROI as a particular coin using calibration data
-7. Compute the total value
+5. Write calibration code body (optional)
+6. Write calibration code helper functions (optional)
+7. Write main coin detection code body
+8. Write main coin detection code helper functions
+9. Count coins using the calibration and coin detection programs!
 
 If you run into any issues, scroll down to check out some tourbleshooting tips!
 
@@ -208,8 +210,13 @@ We can see a clear separation between the distribution to R:B values in the dime
 
 With similar distributions, I was able to find adequate separation between (1) pennies and nickels radii, and (2) nickels and quarters radii.  While there was some overlap (<15%) in both cases, let's proceed and see how well our coin counter does.
 
-### Step 5: Create a calibration file
-Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.  We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space.  Let's continue the code from earlier:
+### Step 5: Write calibration code body (optional)
+Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.  This is optional, because you can just go into the main program and manually set whatever parameters you want.  We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space using a red "x".  Once the coin is placed on the x, the coin's R:B value and radius will be written out to a file each time a new frame is loaded, and displayed on the screen. Once the values are written out above each coin, the user knows they have all the calibration data and can start running the main program.  As an example, I've also chosen to include the R:G values.  You can add as many heuristics as you want!  Here's what the final calibration product will look like:
+
+
+
+
+Let's continue the code from earlier:
 
 
 ``` python
@@ -251,7 +258,7 @@ Since the size and the color will change depending on the distance the camera is
             im_with_keypoints=cv2.circle(im_with_keypoints, (np.int(keypoints[x].pt[0]),np.int(keypoints[x].pt[1])),
 	    radius=np.int(keypoints[x].size/2), color=(0,0,255), thickness=2) 
 	    
-	    # Step 5C
+	    # Step 5C & 6A
 	    # Call the "detectCoinType" function
             im_with_keypoints = self.detectCoinType(im_with_keypoints,
 	    np.int(keypoints[x].pt[0]),np.int(keypoints[x].pt[1]), xVal + 20 , yVal + yDelta, xDelta,
@@ -271,6 +278,10 @@ Since the size and the color will change depending on the distance the camera is
  
 **Step 5D** The program is complete.  At this point, if you are using a JeVois, you would send the altered image out to be displayed on the video interface.
 
+### Step 6: Write calibration code helper functions (optional)
+Let's take a look at all the helper functions we use in this code, starting with the "detectCoinType" function.  
+
+
 Let's take a look at the "detectCoinType" function:
 
 ```python
@@ -281,65 +292,84 @@ Let's take a look at the "detectCoinType" function:
      ## Penny - 1
      ## Nickel - 2
      ## Quarter - 3
+    
+    # Step 6A
+    # Pass in the (x,y) coordinates of the detected coin center as (circleCenterXCoord,circleCenterYCoord)
+    # Pass in the (x,y) coordinates of the left most marker as (targetXVal, targetYVal)
+    # Pass in the target spacing between coins as xDelta 
+    # Pass in the radius of the detected coin
     def detectCoinType(self, image, circleCenterXCoord,circleCenterYCoord, \
         targetXVal, targetYVal, xDelta, radius):  
 
-        height,width,depth = image.shape
-
-        PennyNum = 0
-        DimeNum = 0
-        NickelNum = 0
-        QuarterNum = 0
-
+	# Check each marker and see which the coin is closest too
         for i in range(0,4):
            # Calculate % difference b/w center of detected circle and center of coin target
             xDifference = abs(circleCenterXCoord-targetXVal)/targetXVal
             yDifference = abs(circleCenterYCoord-targetYVal)/targetYVal
 
-            # If center of circle is close enough to target print out the type of coin on the image
+            # If center of circle is within 30% of the target label the image with the detected coin type
+	    # E.g. If a coin is detected to be near the Penny marker, label
             if (xDifference < 0.3) and (yDifference < 0.3):
-                
+               
+	       	# Step 6B
                 # Call the printCoinType function to get the coin type
+		# The variable "i" is the number iteration of this loop
+		# E.g. if i was 3, this is the third coin from the left, which is the Nickel 
                 coin = self.printCoinType(i)
-
-
-
-                
+		
+		# Continue with Step 6A
                 # Get RGB values from coin
                 # Radius isn't a great way to distinguish between the coins, looking at RGB values is more helpful
                 # Specifically, looking at the R:G and R:B ratios helps distinguish pennies from the rest
-                # We use a circular area of half the radius of the coin with the same center to get the average RGB value
-                circle_img = np.zeros((height, width), np.uint8)
-                # Get a circle with half the radius of the coin with the same center
+                
+		# We use a circular area of half the radius of the coin with the same center to get the average RGB value
+		circle_img = np.zeros((height, width), np.uint8)
                 cv2.circle(circle_img, (circleCenterXCoord, circleCenterYCoord), int(radius/2), [255,255,255], -1)
                 circle_img = np.uint8(circle_img)
-                # Compute the mean RGB value in this circle
+                
+		# Compute the mean RGB value in this circle
                 mean_val = cv2.mean(image, circle_img)[::-1]
+		
+		# Store these mean RGB values and use them to compute the ratios
                 temp = mean_val[1:]
                 red = temp[0]
                 green = temp[1]
                 blue = temp[2]
                 ratioRG = red/green
-                ratioRB = blue/green
-                rgbSqrd =  math.sqrt(red*red + blue*blue + green*green)
+                ratioRB = red/blue
+		
+		# If you want, you can add more heuristics, like the rgb squared value, which I've commented out.  
+                # rgbSqrd =  math.sqrt(red*red + blue*blue + green*green)
 
+		# Step 6C
+		# Call the writeToFile function to write out the ratios and radii information for each coin
                 self.writeToFile(ratioRG,ratioRB,radius,coin)
 
+		# Write out the calculated values on the screen
+		# This can help you troubleshoot if you notice the values are not what you expect
                 cv2.putText(image, "RG " + str("%.2f" % ratioRG), (targetXVal, targetYVal - 105), \
                      cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
                 cv2.putText(image, "RB " + str("%.2f" % ratioRB), (targetXVal, targetYVal - 130), \
                      cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
+		# Write out the detected coin type values on the screen
+		# This allows you to double check you are detecting the expected coin
                 cv2.putText(image, coin, (targetXVal, targetYVal - 60), \
                      cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-                #get radius
+                
+		# Write out the detected coin radius on the screen
                 cv2.putText(image, "radius " + str("%.2f" % radius), (targetXVal, targetYVal - 80), \
                      cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-
+		
+		# We have detected the coin and added the necessary text to the image
+		# Now we can exit this function
                 return image
-
+		
+            # Every time the loops is incremented, we shift one marker to the left
+            # As a result, we have to update the x coordinate of the marker
             targetXVal = targetXVal + xDelta
-                
+        
+	# In this case, no coin was detected within 30% of a marker
         return image
 ```
 
