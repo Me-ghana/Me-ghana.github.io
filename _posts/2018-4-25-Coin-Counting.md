@@ -257,6 +257,16 @@ Since the size and the color will change depending on the distance the camera is
 	    np.int(keypoints[x].pt[0]),np.int(keypoints[x].pt[1]), xVal + 20 , yVal + yDelta, xDelta,
 	    np.int(keypoints[x].size/2))
 	
+	# Step 5D
+	# Convert our BGR image to video output format and send to host over USB:
+        im_with_keypoints = self.imageText(im_with_keypoints, xVal, yVal, xDelta, yDelta)
+        outframe.sendCvBGR(im_with_keypoints)
 ```
 
-  
+**Step 5A** We want the user to place the four coins evenly spaced in front of the camera in a specific order.  We'll draw a marker where each coin should be placed starting at (xVal,yVal). We'll label the image with the name of the coin the user should place yDelta pixels above the marker.
+
+**Step 5B** This loop should iterate four times, one for each coin.  A green circlular border will be drawn around each coin.
+
+**Step 5C** The whole point of the calibration step is to store the heuristic data for each coin type in a file. The "detectCoinType" function will do that.   We'll talk more about this function soon!
+ 
+**Step 5D** The program is complete.  At this point, if you are using a JeVois, you would send the altered image out to be displayed on the video interface.
