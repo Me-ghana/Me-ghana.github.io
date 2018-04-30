@@ -12,11 +12,13 @@ My first goal was to see how well I could identify the four most common U.S. coi
 2. Pre-process our image 
 3. Identify coins with blob detection
 4. Determine the heuristics and color space 
-5. Write calibration code body (optional)
-6. Write calibration code helper functions (optional)
-7. Write main coin detection code body
-8. Write main coin detection code helper functions
+5. Write calibration program body (optional)
+6. Write calibration program helper functions (optional)
+7. Write main coin detection program helper functions
+8. Write main coin detection code program body
 9. Count coins using the calibration and coin detection programs!
+
+The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify which coin is which, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters you want manually in the coin counting program.)
 
 If you run into any issues, scroll down to check out some tourbleshooting tips!
 
@@ -379,7 +381,7 @@ The "detectCoinType" function determines which marker is closest to the coin.  S
         return image
 ```
 
-**Step 6B: imageText**
+**Step 6B: Function imageText**
 This is a simple function which adds text to the image to help the user know where to place which coin.  For example, the user should place a dime on the red "x" with the word "dime" in red underneat the "x".  See the video in Part 5 to get an idea of what the end result should be.
 
 ```python
@@ -414,7 +416,7 @@ This is a simple function which adds text to the image to help the user know whe
 ```
 
 
-**Step 6B: printCoinType**
+**Step 6B: Function printCoinType**
 This is another simple function which returns the type of the coin detected based on its closest marker.     
 
 ```python
@@ -429,8 +431,8 @@ This is another simple function which returns the type of the coin detected base
             coin = 'Quarter'
         return coin
 ```
-**Step 6C: writeToFile**
-This is our last helper function!  Here, we write out to three files for each coin, storing the R:G, R:B, and radius information.   Note that since we are appending infromation to the end of the file, the user will have to go in and delete the files completely if they want to start collecting calibration data for a new environment.  A future imrpovement may be to clear the file after reaching a certain number of lines, so that files can be completely updated by running the calibration program for a given amount of time.
+**Step 6C: Function writeToFile**
+This is our last helper function!  Here, we write out to three files for each coin, storing the R:G, R:B, and radius information.   Note that since we are appending infromation to the end of the file, the user will have to go in and delete the files completely if they want to start collecting calibration data for a new environment.  A future imrpovement may be to clear the file after reaching a certain number of lines, so that files can be completely updated by running the calibration program for a given amount of time.  On the JeVois, data can be stored in the /jevois/data folder. 
 
 ```python
     def writeToFile(self,ratioRG,ratioRB,radius,coin):
@@ -448,5 +450,95 @@ This is our last helper function!  Here, we write out to three files for each co
 ```
 We're finally done with the calibration program!  If you put steps 1-6 together, you should have a fully functional calibration program.  Now let's move on to the actual coin counting program.
 
+### Step 7: Write main coin counter program helper functions
+The pre-processing of te main coin counter program will be very similar to the calibration program, so we'll get to that later when we put everything together.  For now, we will focus on the helper functions that will read in the data from the files the calibration program created.
+
+**Step 7A: Function coinValues**
+This function reads the data from the file corresponding to the coin name passed as a parameter.  The function then computes several statistics, like the average R:B value, that can be later used by the user to customize coin identification. 
 
 
+```python
+    def coinValues(self,coin):
+    	# The number of coins for which data is stored (number of lines in file)
+        coinNum = 0
+	# A running sum of the R:G ratio
+        rgSum = 0
+	# A running square of sums of the R:G ratio
+        rgSqSum = 0
+	# A running sum of the R:B ratio
+        rbSum = 0
+	# A running square of sums of the R:B ratio
+        rbSqSum = 0
+	# A running sum of the radii
+        radiusSum = 0
+	# A running square of sums of the radii
+        radiusSqSum = 0
+	
+	# Open file containing R:G data and compute related variables
+        with open("/jevois/data/" + coin + "_RG.txt","r") as fo:
+            for line in fo:
+                line = line.strip()
+                if line:
+                     rgSum = rgSum + float(line)
+                     rgSqSum = float(line) * float(line) + rgSqSum
+                     coinNum = coinNum + 1
+		     
+	# Computed Statistics
+        rgAvg = rgSum/coinNum
+        rgSqAvg = rgSqSum/coinNum
+        varianceRG = rgSqAvg - rgAvg*rgAvg
+        standardDeviationRG = math.sqrt(varianceRG)
+
+	# Open file containing R:B data and compute related variables
+        with open("/jevois/data/" + coin + "_RB.txt","r") as fo:
+            for line in fo: 
+                line = line.strip()
+                if line:
+                     rbSum = rbSum + float(line)
+                     rbSqSum = float(line) * float(line) + rbSqSum
+		     
+	# Computed Statistics
+        rbAvg = rbSum/coinNum
+        rbSqAvg = rbSqSum/coinNum
+        varianceRB = rbSqAvg - rbAvg*rbAvg
+        standardDeviationRB = math.sqrt(varianceRB)
+
+	# Open file containing radius data and compute related variables
+        with open("/jevois/data/" + coin + "_Radius.txt","r") as fo:
+            for line in fo: 
+                line = line.strip()
+                if line:
+                     radiusSum = radiusSum + float(line)
+                     radiusSqSum = float(line) * float(line) + radiusSqSum
+
+	# Computed Statistics
+        radiusAvg = radiusSum/coinNum
+        radiusSqAvg = radiusSqSum/coinNum
+        variance = radiusSqAvg - radiusAvg*radiusAvg
+        standardDeviation = math.sqrt(variance)
+
+
+	# Create an array storing this data and return array
+        coinValues = np.array([radiusAvg,rgAvg,rbAvg,standardDeviation,standardDeviationRG,standardDeviationRB])
+        return coinValues
+```
+
+**Step 7B: Function addCoinStats**
+
+
+```python
+    def addCoinStats(self,inimg,values,Coin,initialX,deltaX):
+        if Coin == 'Penny' or Coin == 'Dime':
+            cv2.putText(inimg, str(Coin) + " Radius " + str("%.2f" % values[0]), (20, initialX+deltaX), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+            cv2.putText(inimg, str(Coin) + " RG " + str("%.2f" % values[1]), (20, initialX+deltaX*2), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+            cv2.putText(inimg, str(Coin) + " RB " + str("%.3f" % values[2]), (20, initialX+deltaX*3), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+            cv2.putText(inimg, str(Coin) + " Radius Standard Dev " + str("%.3f" % values[3]), (20, initialX+deltaX*4), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+            cv2.putText(inimg, str(Coin) + " RG Standard Dev" + str("%.3f" % values[4]), (20, initialX+deltaX*5), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+            cv2.putText(inimg, str(Coin) + " RB Standard Dev " + str("%.3f" % values[5]), (20, initialX+deltaX*6), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+
+        else:
+            cv2.putText(inimg, str(Coin) + " Radius " + str("%.2f" % values[0]), (20, initialX+deltaX), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+            cv2.putText(inimg, str(Coin) + " Standard Dev " + str("%.3f" % values[3]), (20, initialX+deltaX*2), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
+
+        return inimg
+```
