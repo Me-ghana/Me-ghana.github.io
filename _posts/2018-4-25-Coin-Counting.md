@@ -14,8 +14,8 @@ My first goal was to see how well I could identify the four most common U.S. coi
 4. Determine the heuristics and color space 
 5. Write calibration program body (optional)
 6. Write calibration program helper functions (optional)
-7. Write main coin detection program helper functions
-8. Write main coin detection code program body
+7. Write coin detection program helper functions
+8. Write coin detection program program body
 9. Count coins using the calibration and coin detection programs!
 
 The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify which coin is which, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters you want manually in the coin counting program.)
@@ -524,9 +524,11 @@ This function reads the data from the file corresponding to the coin name passed
 ```
 
 **Step 7B: Function addCoinStats**
-
+This function is to help with troubleshooting, and I do not actually call this function in my final code.  What it does is display all the calculated statistics for each type of coin.  This can help you notice differences between coins, and manually set the parameters.
 
 ```python
+    # Adds statistics text to the screen
+    # Can be used for seeing real-time values of coin data
     def addCoinStats(self,inimg,values,Coin,initialX,deltaX):
         if Coin == 'Penny' or Coin == 'Dime':
             cv2.putText(inimg, str(Coin) + " Radius " + str("%.2f" % values[0]), (20, initialX+deltaX), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
@@ -542,3 +544,31 @@ This function reads the data from the file corresponding to the coin name passed
 
         return inimg
 ```
+### Step 8: Write main coin detection code program body
+
+**Step 8A**
+
+### Step 9: Count coins using the calibration and coin detection programs!
+
+We're ready to test our programs!  Let's summarize what we're going to do to run the program, and also point out a few nuances.
+
+1. Secure the JeVois (or whatever device you are using) above your workspace.  Make sure your workspace has consistent lighting and a light (preferably white) background. 
+2. Run the JeVois program "Coin Calibration" at resolution 480 X 600 and 20fps.  Line up your coins according to the instructions on the screen.  Stop the program and turn off the video interface.  if you are using the JeVois, connect to the USB.
+3. Open the JeVois USB and change directory into "/jevois/data", or wherever you store your data files on your machine. There should be twelve files (three for each coin).  Delete all the files to remove the stale data.
+4. Eject the JeVois USB and then wait for the camera to blink red.  Once the JeVois is ready, run the calibration program.  Your coins should already be set up in the right spots.  
+5. After a few seconds, more than enough calibration data should be collected.  Switch programs to the "Coin Counter".  You should see a total value at the top left corner.  Add more coins, and see how it works!
+
+Trouble-Shooting
+If you've followed steps 1-5 and are getting too many errors, try modifying the Coin Counter file by adding the "addCoinStats" function, or simply look at your textfile data.  Here are some specific ways you may be able to improve your performance:
+⋅⋅* My quarters and nickels are too similar &/or my dimes and nickels are too similar!
+...How close is your camera?  In this example, the camera was only 17cm away from the coins.  If your camera is too far away, it will not be able to detect the difference in size between the silver coins.
+..* My pennies and nickels are too similar &/or my pennies and dimes are too similar!
+...Are you relying too heavily on radius to distinguish between these coins?  Try using color information.
+..* I'm using color information and still can't distinguish between pennies and other coins!
+...Make sure you have even lighting, and that you are working off a white or light surface. Also make sure your camera is secured and not moving when you take your calibration data and when you run the main program. If you're still having issues, try graphing probability distributions for the different heuristics and see if what you are trying to achieve is possible.  You may be using a machine with too low a resolution, or perhaps your coins are too weathered to distinguish.
+
+Take-Aways
+This is a great project to learn about different computer vision algorithms, and also get used to using OpenCV.  Clearly, this is not the most robust way to count coins.  There are lots of issues - it requires calibration, it's limited to US coins, and it won't work on dirty or very dark coins.  The good news is there are a lot of ways we can improve on this project - here are some ideas:
+1. Coins have very specific weights - use a sensitive scale that interacts with an arduino to add confidence values to the computed sum
+2. Take the data we used earlier to create probability density functions and use them to train a convolution neural net. Use the CNN to identify coins instead of relying on color spaces and coin sizes.  The plus side to this is you can keep adding to your library of images, and start identifying coins from different countries.
+3. Explore other OpenCV functions, such as SIFT, for coin identification
