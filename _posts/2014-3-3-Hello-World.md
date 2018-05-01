@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Coin Counting with the JeVois
+title: Test Post 
 ---
 
 -Add info-
