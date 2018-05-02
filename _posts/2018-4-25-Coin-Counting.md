@@ -18,12 +18,12 @@ My first goal was to see how well I could identify the four most common U.S. coi
 5. <a href = "https://me-ghana.github.io/Coin-Counting/#P5">Write calibration program body (optional)</a>
 6. <a href = "https://me-ghana.github.io/Coin-Counting/#P6">Write calibration program helper functions (optional)</a>
 7. <a href = "https://me-ghana.github.io/Coin-Counting/#P7">Write coin detection program helper functions</a>
-8. <a href = "https://me-ghana.github.io/Coin-Counting/#P9">Write coin detection program program body</a>
+8. <a href = "https://me-ghana.github.io/Coin-Counting/#P8">Write coin detection program program body</a>
 9. <a href = "https://me-ghana.github.io/Coin-Counting/#P9">Count coins using the calibration and coin detection programs!</a>
 
 The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
 
-You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the calibration and counting program. If you run into any issues, scroll down to check out some <a href = "https://me-ghana.github.io/Coin-Counting/#PT">tourbleshooting tips!</a>
+You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the calibration and counting program. If you run into any issues, scroll down to check out some <a href = "https://me-ghana.github.io/Coin-Counting/#PT">tourbleshooting tips!</a> If you want to skip ahead and see how this project turned out, check out the <a href = "https://me-ghana.github.io/Coin-Counting/#PTA">take-aways</a>.
 <div id = "P1"> </div>
 ### Step 1: Read in our image
 Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
@@ -698,19 +698,22 @@ D. Eject the JeVois USB and then wait for the camera to blink red.  Once the JeV
 E. After a few seconds, more than enough calibration data should be collected.  Switch programs to the "CoinCounter".  You should see a total value at the top left corner.  Add more coins, and see how it works!
 
 <div id = "PT"> </div>
-###Trouble-Shooting
+### Trouble-Shooting
 If you've followed steps A-E and are getting too many errors, try modifying the Coin Counter file by adding the "addCoinStats" function, or simply look at your textfile data.  Here are some specific ways you may be able to improve your performance:
 * My quarters and nickels are too similar &/or my dimes and nickels are too similar!
+  
   How close is your camera?  In this example, the camera was only 17cm away from the coins.  If your camera is too far away, it will not be able to detect the difference in size between the silver coins.
   
 * My pennies and nickels are too similar &/or my pennies and dimes are too similar!
+  
   Are you relying too heavily on radius to distinguish between these coins?  Try using color information.
 
 * I'm using color information and still can't distinguish between pennies and other coins!
+  
   Make sure you have even lighting, and that you are working either a white or black surface. If the lighting is coming at an angle, it could cause shadows that increase the radius of some of your coins.  Also make sure your camera is secured and not moving when you take your calibration data and when you run the main program. If you're still having issues, try graphing probability distributions for the different heuristics and see if what you are trying to achieve is possible.  You may be using a machine with too low a resolution, or perhaps your coins are too weathered to distinguish.
 
 <div id = "PTA"> </div>
-###Take-Aways
+### Take-Aways
 This is a great project to learn about different computer vision algorithms, and also get used to using OpenCV.  Clearly, this is not the most robust way to count coins.  There are lots of issues - it requires calibration, it's limited to US coins, and it won't work on dirty or very dark coins.  The good news is there are a lot of ways we can improve on this project - here are some ideas:
 
 1. Coins have very specific weights - use a sensitive scale that interacts with an arduino to add confidence values to the computed sum
