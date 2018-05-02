@@ -3,12 +3,14 @@ layout: post
 title: Coin Counting with the JeVois in Python
 ---
 
-This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV, like in the video below. I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  The final code uses blob detection, but we'll explore other algorithms such as Hough Circles and the Watershed algorithm along the way.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, you can use any video stream you can extract images from.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
+This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV, like in the video below. 
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=R4LO0sgfBmU"><img src="https://img.youtube.com/vi/R4LO0sgfBmU/0.jpg" ></a>
 	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
 </div>
+
+I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  The final code uses blob detection, but we'll explore other algorithms such as Hough Circles and the Watershed algorithm along the way.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, you can use any video stream you can extract images from.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
 
 My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have nine steps:
 1. <a href = "https://me-ghana.github.io/Coin-Counting/#P1">Read in our image</a>
