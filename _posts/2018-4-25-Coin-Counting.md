@@ -21,7 +21,7 @@ My first goal was to see how well I could identify the four most common U.S. coi
 8. <a href = "https://me-ghana.github.io/Coin-Counting/#P8">Write coin detection program program body</a>
 9. <a href = "https://me-ghana.github.io/Coin-Counting/#P9">Count coins using the calibration and coin detection programs!</a>
 
-The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
+The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and will then calculate the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
 
 You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the calibration and counting program. If you run into any issues, scroll down to check out some <a href = "https://me-ghana.github.io/Coin-Counting/#PT">tourbleshooting tips!</a> If you want to skip ahead and see how this project turned out, check out the <a href = "https://me-ghana.github.io/Coin-Counting/#PTA">take-aways</a>.
 <div id = "P1"> </div>
@@ -677,7 +677,7 @@ We calculate the total sum and display it on screen.  And we're done!
 
 We're ready to test our programs!  Let's summarize what we're going to do to run the program, and also point out a few important points.
 
-A. Secure the JeVois (or whatever device you are using) above your workspace.  Make sure your workspace has consistent lighting and a light (preferably white) background. 
+A. Secure the JeVois (or whatever device you are using) above your workspace.  Make sure your workspace has consistent lighting and a white or black background. 
 
 B. Run the JeVois program "Coin Calibration" at resolution 640x480 and 34fps.  Line up your coins according to the instructions on the screen.  Stop the program and turn off the video interface.  if you are using the JeVois, connect to the USB.  This step should look like this: 
 
