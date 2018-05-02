@@ -686,18 +686,18 @@ We're ready to test our programs!  Let's summarize what we're going to do to run
 3. Open the JeVois USB and change directory into "/jevois/data", or wherever you store your data files on your machine. There should be twelve files (three for each coin).  Delete all the files to remove the stale data.
 4. Eject the JeVois USB and then wait for the camera to blink red.  Once the JeVois is ready, run the calibration program again.  Your coins should already be set up in the right spots, just like in this video below.
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=kTZLyB5hBIY"><img src="https://img.youtube.com/vi/kTZLyB5hBIY/0.jpg" ></a>
+  <a href="https://www.youtube.com/watch?v=cIm6demdQMY"><img src="https://img.youtube.com/vi/cIm6demdQMY/0.jpg" ></a>
 	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
 </div>
 5. After a few seconds, more than enough calibration data should be collected.  Switch programs to the "CoinCounter".  You should see a total value at the top left corner.  Add more coins, and see how it works!
 
 Trouble-Shooting
 If you've followed steps 1-5 and are getting too many errors, try modifying the Coin Counter file by adding the "addCoinStats" function, or simply look at your textfile data.  Here are some specific ways you may be able to improve your performance:
-⋅⋅* My quarters and nickels are too similar &/or my dimes and nickels are too similar!
+* My quarters and nickels are too similar &/or my dimes and nickels are too similar!
 ⋅⋅⋅How close is your camera?  In this example, the camera was only 17cm away from the coins.  If your camera is too far away, it will not be able to detect the difference in size between the silver coins.
-⋅⋅* My pennies and nickels are too similar &/or my pennies and dimes are too similar!
+* My pennies and nickels are too similar &/or my pennies and dimes are too similar!
 ⋅⋅⋅Are you relying too heavily on radius to distinguish between these coins?  Try using color information.
-⋅⋅* I'm using color information and still can't distinguish between pennies and other coins!
+* I'm using color information and still can't distinguish between pennies and other coins!
 ⋅⋅⋅Make sure you have even lighting, and that you are working either a white or black surface. If the lighting is coming at an angle, it could cause shadows that increase the radius of some of your coins.  Also make sure your camera is secured and not moving when you take your calibration data and when you run the main program. If you're still having issues, try graphing probability distributions for the different heuristics and see if what you are trying to achieve is possible.  You may be using a machine with too low a resolution, or perhaps your coins are too weathered to distinguish.
 
 Take-Aways
