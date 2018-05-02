@@ -5,6 +5,76 @@ title: Coin Counting User Guide
 
 -Add info-
 
-Lorem ipsum dolor sit amet, et alienum incorrupte eam, ea nam quas iudico oratio. Ea pri labitur labores. Eos ad repudiare splendide, at eam dicit laudem. Ex habeo definitionem sit, at has inani mollis omittantur, offendit ullamcorper voluptatibus vim id. Etiam nusquam his te, nobis suscipiantur vix te.
+A short guide on how to use the JeVois Coin Counting and Coin Calibration modules.
 
-No cum homero scripserit mediocritatem, volutpat gloriatur ea nec. Mei omnis atomorum ea, usu cu postea delectus incorrupte. Et tempor instructior vis. Eu alterum deleniti recusabo vix, laudem mediocrem repudiandae ei est, no oratio dolorum comprehensam sed.
+This module helps you count the total value of coins in the view of the JeVois. Here's a simple user guide. Before you start this guide, you should be familiar with how to load new vision modules onto the JeVois.  If you don't, head over to the [JeVois website](http://jevois.org/) and check out the tutorials.  If you want more information about what this code is doing, check out [the programmer tutorial](https://me-ghana.github.io/Coin-Counting/).  
+
+A. Download the code for both the calibration and counting programs from the [github](https://github.com/Me-ghana/Coin-Counter). The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and will then calculate the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
+
+B. Make any desired changes to parameters.  Load the code onto your JeVois.
+
+C. Secure the JeVois above your workspace.  Make sure your workspace has consistent lighting and a white or black background. 
+
+B. Run the JeVois program "Coin Calibration" at resolution 640x480 and 34fps.  Line up your coins according to the instructions on the screen.  Stop the program and turn off the video interface.  if you are using the JeVois, connect to the USB.  This step should look like this: 
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=kTZLyB5hBIY"><img src="https://img.youtube.com/vi/kTZLyB5hBIY/0.jpg" ></a>
+	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
+</div>
+
+C. Open the JeVois USB and change directory into "/jevois/data". There should be twelve files (three for each coin).  Delete all the files to remove the stale data.
+
+D. Eject the JeVois USB and then wait for the camera to blink red.  Once the JeVois is ready, run the calibration program again.  Your coins should already be set up in the right spots, just like in this video below.
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=cIm6demdQMY"><img src="https://img.youtube.com/vi/cIm6demdQMY/0.jpg" ></a>
+	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
+</div>
+
+E. After a few seconds, more than enough calibration data should be collected.  Switch programs to the "CoinCounter".  You should see a total value at the top left corner.  Add more coins, and see how it works!
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=R4LO0sgfBmU"><img src="https://img.youtube.com/vi/R4LO0sgfBmU/0.jpg" ></a>
+	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
+</div>
+
+
+<div id = "PT"> </div>
+### Trouble-Shooting
+If you've followed steps A-E and are getting too many errors, try modifying the Coin Counter file by adding the "addCoinStats" function, or simply look at your textfile data.  Here are some specific ways you may be able to improve your performance:
+* My quarters and nickels are too similar &/or my dimes and nickels are too similar!
+  
+  How close is your camera?  In this example, the camera was only 17cm away from the coins.  If your camera is too far away, it will not be able to detect the difference in size between the silver coins.
+  
+* My pennies and nickels are too similar &/or my pennies and dimes are too similar!
+  
+  Are you relying too heavily on radius to distinguish between these coins?  Try using color information.
+
+* I'm using color information and still can't distinguish between pennies and other coins!
+  
+  Make sure you have even lighting, and that you are working either a white or black surface. If the lighting is coming at an angle, it could cause shadows that increase the radius of some of your coins.  Also make sure your camera is secured and not moving when you take your calibration data and when you run the main program. If you're still having issues, try graphing probability distributions for the different heuristics and see if what you are trying to achieve is possible.  You may be using a machine with too low a resolution, or perhaps your coins are too weathered to distinguish.
+
+* I'm unable to detect any coins!
+
+  Are your coins far enough apart?  As discussed in the [the programmer tutorial](https://me-ghana.github.io/Coin-Counting/), if the coins are too close, the Simple Blob Detector won't pick them up.  You can also try changing the parameters of the simple blob detector.  
+  
+* What should I do if I want to detect overlapping coins?
+
+  The simple blob detector isn't good at detecting overlapping coins, but Hough Circles and the Watershed algorithm are.  You can try substituting out the blob detector for these algorithms instead, as explained in [the programmer tutorial](https://me-ghana.github.io/Coin-Counting/).  Here's a video of Hough Circles detecting slighly overlapping coins:
+ 
+ <div align="center">
+  <a href="https://www.youtube.com/watch?v=lPb4vpTNWcI"><img src="https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg" alt="IMAGE ALT TEXT"></a>
+	<div align = "center"><figcaption>Click image watch video</figcaption></div>
+</div>
+
+  
+  
+<div id = "PTA"> </div>
+### Take-Aways
+This is a great project to learn about different computer vision algorithms, and also get used to using OpenCV.  Clearly, this is not the most robust way to count coins.  There are lots of issues - it requires calibration, it's limited to US coins, and it won't work on dirty or very dark coins.  The good news is there are a lot of ways we can improve on this project - here are some ideas:
+
+1. Coins have very specific weights - use a sensitive scale that interacts with an arduino to add confidence values to the computed sum
+
+2. Take the data we used earlier to create probability density functions and use them to train a convolution neural net. Use the CNN to identify coins instead of relying on color spaces and coin sizes.  The plus side to this is you can keep adding to your library of images, and start identifying coins from different countries.
+
+3. Explore other OpenCV functions, such as SIFT, for coin identification
