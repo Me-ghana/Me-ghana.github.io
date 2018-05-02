@@ -233,10 +233,12 @@ We can see a clear separation between the distribution of R:G dime and the penny
 With similar distributions, I was able to find adequate separation between (1) pennies and nickels radii, and (2) nickels and quarters radii.  While there was some overlap (<15%) in both cases, let's proceed and see how well our coin counter does.
 <div id = "P5"> </div>
 ### Step 5: Write calibration code body (optional)
-Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.  This is optional, because you can just go into the main program and manually set whatever parameters you want.  We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space using a red "x".  Once the coin is placed on the x, the coin's R:B value and radius will be written out to a file each time a new frame is loaded, and displayed on the screen. Once the values are written out above each coin, the user knows they have all the calibration data and can start running the main program.  As an example, I've also chosen to include the R:G values.  You can add as many heuristics as you want!  Here's what the final calibration product will look like:
+Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.  This is optional, because you can just go into the main program and manually set whatever parameters you want.  We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space using a red "x".  Once the coin is placed on the x, the coin's R:G value and radius will be written out to a file each time a new frame is loaded, and displayed on the screen. Once the values are written out above each coin, the user knows they have all the calibration data and can start running the main program.  As an example, I've also chosen to include the R:B values.  You can add as many heuristics as you want!  Here's what the final calibration product will look like:
 
-
-
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=kTZLyB5hBIY"><img src="https://img.youtube.com/vi/kTZLyB5hBIY/0.jpg" ></a>
+	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
+</div>
 
 Let's continue the code from earlier:
 
