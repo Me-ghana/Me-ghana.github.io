@@ -57,9 +57,8 @@ Here are some specific ways you may be able to improve your performance:
   Make sure you have even lighting, and that you are using either a white or black surface. If the lighting is coming at an angle, it could cause shadows that increase the radius of some of your coins.  Also make sure your camera is secured and not moving when you take your calibration data and when you run the main program. If you're still having issues, try graphing probability distributions for the different heuristics and see if what you are trying to achieve is possible, as discussed in the [the programmer tutorial](https://me-ghana.github.io/Coin-Counting/).  Perhaps your coins are too weathered to distinguish between.
   
  <p align = "center">
-<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart.png" width = "600"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart.png" width = "600"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
 
-<p align = "center">
 <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chartRG.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime R:G Ratio</figcaption></div>
 </p>
 
