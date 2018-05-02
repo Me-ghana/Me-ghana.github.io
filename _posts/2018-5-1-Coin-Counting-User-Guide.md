@@ -63,6 +63,7 @@ Here are some specific ways you may be able to improve your performance:
 <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chartRG.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime R:G Ratio</figcaption></div>
 </p>
 
+
 * I'm unable to detect any coins!
 
   Are your coins far enough apart?  As discussed in the [the programmer tutorial](https://me-ghana.github.io/Coin-Counting/), if the coins are too close, the Simple Blob Detector won't pick them up.  You can also try changing the parameters of the simple blob detector.  
