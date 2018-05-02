@@ -25,7 +25,7 @@ The big picture is we will be creating two programs, a calibration program and a
 
 You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the calibration and counting program. If you run into any issues, scroll down to check out some tourbleshooting tips!
 
-### Step 1: Read in our image<div id = "P1"></div>
+### Step 1: Read in our image<div id = "P1"> </div>
 Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
 
 Here's the following code for reading in our image.  
@@ -43,7 +43,7 @@ Here's an image I read in on my video stream.  I'm using a resolution of 640X480
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png" width = "450">
 </p>
 
-<div id = "P1">### Step 2: Pre-process our image</div>
+### Step 2: Pre-process our image
 In Step 2, we get our first taste of OpenCV algorithms. This pre-processing was adapted from the [JeVois Python Dice Tutorial](http://jevois.org/tutorials/ProgrammerPythonDice.html).  
 
 Let's continue our above code:
