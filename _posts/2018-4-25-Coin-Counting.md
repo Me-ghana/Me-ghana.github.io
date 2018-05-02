@@ -3,8 +3,8 @@ layout: post
 title: Coin Counting with the JeVois in Python - Programmer Tutorial
 ---
 
-This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV, like in the video below. 
-
+This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV. 
+<div id = "TOP"> </div>
 <div align="center">
   <a href="https://www.youtube.com/watch?v=R4LO0sgfBmU"><img src="https://img.youtube.com/vi/R4LO0sgfBmU/0.jpg" ></a>
 	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
@@ -12,7 +12,7 @@ This tutorial will help explain how to identify U.S. coins from a video stream w
 
 I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  The final code uses blob detection, but we'll explore other algorithms such as Hough Circles and the Watershed algorithm along the way.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, you can use any video stream you can extract images from.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
 
-My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have nine steps:
+My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quarter, by detecting just the circle sizes and coin colors.  We'll have nine steps:
 1. <a href = "https://me-ghana.github.io/Coin-Counting/#P1">Read in our image</a>
 2. <a href = "https://me-ghana.github.io/Coin-Counting/#P2">Pre-process our image</a>
 3. <a href = "https://me-ghana.github.io/Coin-Counting/#P3">Identify coins with blob detection</a>
@@ -20,10 +20,10 @@ My first goal was to see how well I could identify the four most common U.S. coi
 5. <a href = "https://me-ghana.github.io/Coin-Counting/#P5">Write calibration program body (optional)</a>
 6. <a href = "https://me-ghana.github.io/Coin-Counting/#P6">Write calibration program helper functions (optional)</a>
 7. <a href = "https://me-ghana.github.io/Coin-Counting/#P7">Write coin detection program helper functions</a>
-8. <a href = "https://me-ghana.github.io/Coin-Counting/#P8">Write coin detection program program body</a>
+8. <a href = "https://me-ghana.github.io/Coin-Counting/#P8">Write coin detection program body</a>
 9. <a href = "https://me-ghana.github.io/Coin-Counting/#P9">Count coins using the calibration and coin detection programs!</a>
 
-The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and will then calculate the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
+The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and will generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and will then calculate the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
 
 You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the calibration and counting program. If you run into any issues, scroll down to check out some <a href = "https://me-ghana.github.io/Coin-Counting/#PT">touble-shooting tips!</a> If you want to skip ahead and see how this project turned out, check out the <a href = "https://me-ghana.github.io/Coin-Counting/#PTA">take-aways</a>.
 <div id = "P1"> </div>
@@ -152,7 +152,7 @@ Draw the keypoints as a blue line on the original image.  You can see that we ha
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins3.png" width = "450">
 </p>
 
-While we chose to use the simple blob detector, there are several other algorithms that we can have used instead.  If you're not interested in hearing about the alternatives, skip ahead to Step 4.  
+While we chose to use the simple blob detector, there are several other algorithms that we coukd have used instead.  If you're not interested in hearing about the alternatives, skip ahead to <a href = "https://me-ghana.github.io/Coin-Counting/#P4">Step 4</a>.  
 
 ###### Alternative #1: Find Contours
 An alternative is to use OpenCV's find contour algorithm to detect the coin outlines.  Instead of using the blob detector to apply multiple thresholds, we can automatically apply just one threshold with Otsu's Binarization, which finds the optimal thershold value in a bimodal distribution.  From there, we can find and draw the minimum enclosing circle.
@@ -180,14 +180,14 @@ However, we can see this does not give us as tight as a circle:
 ###### Alternative #2: Hough Circles
 Hough Circles is a specialization of the Hough Transform, and is a popular choice for detecting circles in images.  OpenCV uses the Hough Gradient Method for detection.  It is similar to the Hough Line Transform OpenCV operation.  The algorithm is explained [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html) and a python tutorial for Hough Circles is provided by OpenCV [here](http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_houghcircles/py_houghcircles.html).
 
-We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles. 
+We get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles. 
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=lPb4vpTNWcI"><img src="https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg" alt="IMAGE ALT TEXT"></a>
 	<div align = "center"><figcaption>Click image watch video</figcaption></div>
 </div>
 
-As you can see, it does a pretty good job and is even able to detect coins that are overlapping.  In fact, if you watch the final video using blob detection at the top of this page, you'll notice that at 00:31 seconds, I place a quarter too closely to another coin, and have to move it away for it to be detected.  However, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations, which Hough Circles may be more sensitive to than other methods.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier. If you using static images, or have a very steady video stream, Hough Circles is a great option. 
+As you can see, it does a pretty good job and is even able to detect coins that are overlapping.  In fact, if you watch the final video using blob detection at the top of this page, you'll notice that at 00:31 seconds, I place a quarter too closely to another coin, and have to move it away for it to be detected.  However, the size of the circles are undulating in the Hough Circles example.  This may be due to the fan on the JeVois, which causes vibrations, which Hough Circles may be more sensitive to than other methods.  We can see the coin outline is much steadier in the final coin video with Simple Blob detection <a href = "https://me-ghana.github.io/Coin-Counting/#TOP">(top of the page)</a>. If you using static images, or have a very steady video stream, Hough Circles is a great option. 
 
 ###### Alternative #2: The Watershed Algorithm
 The watershed algorithm is an intuitive method to identify circles.  The idea is that an image can be treated like a topographic map, with valleys separating low points.  If  the center of each coin is the low point in the map, we can fill the valley of each lowpoint with a unique color of water.  The boundaries of each coin are indicated where different water colors merge.  
