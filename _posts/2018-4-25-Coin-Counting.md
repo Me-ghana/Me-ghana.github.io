@@ -12,20 +12,20 @@ This tutorial will help explain how to identify U.S. coins from a video stream w
 
 My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have nine steps:
 1. <a href = "https://me-ghana.github.io/Coin-Counting/#P1">Read in our image</a>
-2. Pre-process our image 
-3. Identify coins with blob detection
-4. Determine the heuristics and color space 
-5. Write calibration program body (optional)
-6. Write calibration program helper functions (optional)
-7. Write coin detection program helper functions
-8. Write coin detection program program body
-9. Count coins using the calibration and coin detection programs!
+2. <a href = "https://me-ghana.github.io/Coin-Counting/#P2">Pre-process our image</a>
+3. <a href = "https://me-ghana.github.io/Coin-Counting/#P3">Identify coins with blob detection</a>
+4. <a href = "https://me-ghana.github.io/Coin-Counting/#P4">Determine the heuristics and color space</a> 
+5. <a href = "https://me-ghana.github.io/Coin-Counting/#P5">Write calibration program body (optional)</a>
+6. <a href = "https://me-ghana.github.io/Coin-Counting/#P6">Write calibration program helper functions (optional)</a>
+7. <a href = "https://me-ghana.github.io/Coin-Counting/#P7">Write coin detection program helper functions</a>
+8. <a href = "https://me-ghana.github.io/Coin-Counting/#P9">Write coin detection program program body</a>
+9. <a href = "https://me-ghana.github.io/Coin-Counting/#P9">Count coins using the calibration and coin detection programs!</a>
 
 The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
 
-You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the Calibration and Counting program. If you run into any issues, scroll down to check out some tourbleshooting tips!
+You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the calibration and counting program. If you run into any issues, scroll down to check out some tourbleshooting tips!
 
-<div id = "P1">### Step 1: Read in our image</div>
+### Step 1: Read in our image<div id = "P1"></div>
 Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
 
 Here's the following code for reading in our image.  
