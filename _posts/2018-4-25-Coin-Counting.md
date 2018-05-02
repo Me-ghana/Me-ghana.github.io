@@ -235,7 +235,11 @@ We can see a clear separation between the distribution of R:G dime and the penny
 With similar distributions, I was able to find adequate separation between (1) pennies and nickels radii, and (2) nickels and quarters radii.  While there was some overlap (<15%) in both cases, let's proceed and see how well our coin counter does.
 <div id = "P5"> </div>
 ### Step 5: Write calibration code body (optional)
-Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.  This is optional, because you can just go into the main program and manually set whatever parameters you want.  We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space using a red "x".  Once the coin is placed on the x, the coin's R:G value and radius will be written out to a file each time a new frame is loaded, and displayed on the screen. Once the values are written out above each coin, the user knows they have all the calibration data and can start running the main program.  As an example, I've also chosen to include the R:B values.  You can add as many heuristics as you want!  Here's what the final calibration product will look like:
+Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should be run prior to the actual coin counting algorithm.  This is optional, because you can just go into the main program and manually set whatever parameters you want.  
+
+**CAUTION: If you do not change the parameters in the main Coin Counter program, this program will expect that 12 files (3 for each coin) be present.  If you forget to run the Calibration program first, you wil get an error. You must have one of each coin type when you calibrate the program. **
+
+We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space using a red "x".  Once the coin is placed on the x, the coin's R:G value and radius will be written out to a file each time a new frame is loaded, and displayed on the screen. Once the values are written out above each coin, the user knows they have all the calibration data and can start running the main program.  As an example, I've also chosen to include the R:B values.  You can add as many heuristics as you want!  Here's what the final calibration product will look like:
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=kTZLyB5hBIY"><img src="https://img.youtube.com/vi/kTZLyB5hBIY/0.jpg" ></a>
@@ -406,7 +410,7 @@ The "detectCoinType" function determines which marker is closest to the coin.  S
 ```
 
 **Step 6B: Function imageText**
-This is a simple function which adds text to the image to help the user know where to place which coin.  For example, the user should place a dime on the red "x" with the word "dime" in red underneat the "x".  See the video in Part 5 to get an idea of what the end result should be.
+This is a simple function which adds text to the image to help the user know where to place which coin.  For example, the user should place a dime on the red "X" with the word "dime" in red underneath the "X".  See the video in Part 5 to get an idea of what the end result should be.
 
 ```python
 	
