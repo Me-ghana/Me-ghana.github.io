@@ -6,7 +6,7 @@ title: Coin Counting with the JeVois in Python
 This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV, like in the video below.   
 
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=R4LO0sgfBmU&feature=youtu.be"><img src="https://img.youtube.com/vi/R4LO0sgfBmU&feature=youtu.be/0.jpg"></a>
+  <a href="https://www.youtube.com/watch?v=R4LO0sgfBmU&feature=youtu.be"><img src="https://img.youtube.com/vi/R4LO0sgfBmU&feature=youtu.be/0.jpg" alt="IMAGE ALT TEXT"></a>
 	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
 </div>
 
