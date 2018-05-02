@@ -82,7 +82,7 @@ Here are some specific ways you may be able to improve your performance:
 </div>
 
 ### Take-Aways 
-This is a great project to learn about different computer vision algorithms, and also get used to using OpenCV.  Clearly, this is not the most robust way to count coins.  There are lots of issues - it requires calibration, it's limited to US coins, and it won't work on dirty or very dark coins.  The good news is there are a lot of ways we can improve on this project - here are some ideas:
+This is a great project to learn about different computer vision algorithms, and to also get used to using OpenCV.  Clearly, this is not the most robust way to count coins.  There are lots of issues - it requires calibration, it's limited to US coins, and it won't work on dirty or very dark coins.  The good news is there are a lot of ways we can improve on this project - here are some ideas:
 
 1. Coins have very specific weights - use a sensitive scale that interacts with an arduino to add confidence values to the computed sum
 
