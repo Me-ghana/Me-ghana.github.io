@@ -11,7 +11,7 @@ This tutorial will help explain how to identify U.S. coins from a video stream w
 </div>
 
 My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have nine steps:
-<a href = "https://me-ghana.github.io/Coin-Counting#P1"> 1. Read in our image </a>
+1. Read in our image
 2. Pre-process our image 
 3. Identify coins with blob detection
 4. Determine the heuristics and color space 
