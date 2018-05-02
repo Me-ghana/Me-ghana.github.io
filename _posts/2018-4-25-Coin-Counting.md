@@ -24,8 +24,8 @@ My first goal was to see how well I could identify the four most common U.S. coi
 The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
 
 You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the calibration and counting program. If you run into any issues, scroll down to check out some tourbleshooting tips!
-
-### Step 1: Read in our image<div id = "P1"> </div>
+<div id = "P1"> </div>
+### Step 1: Read in our image
 Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
 
 Here's the following code for reading in our image.  
