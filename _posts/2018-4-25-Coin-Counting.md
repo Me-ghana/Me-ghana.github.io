@@ -310,7 +310,7 @@ Let's continue the code from earlier:
 
 ### Step 6: Write calibration code helper functions (optional)
 Let's take a look at all the helper functions we use in this code, starting with the "detectCoinType" function.  
-
+<div id = "P6"> </div>
 **Step 6A: detectCoinType**
 The "detectCoinType" function determines which marker is closest to the coin.  Since we have already determined the order of the markers (leftmost marker being 0 and rightmost being 3), we will know which coins we have detected.  We then write out the color information and radius of the detected coin to the matching text file for that coin.  The main coin counting program will then use this file to help tell coins apart. 
 
@@ -471,9 +471,9 @@ This is our last helper function!  Here, we write out to three files for each co
         fo.close()  
 ```
 We're finally done with the calibration program!  If you put steps 1-6 together, you should have a fully functional calibration program.  Now let's move on to the actual coin counting program.
-
+<div id = "P7"> </div>
 ### Step 7: Write main coin counter program helper functions
-The pre-processing of te main coin counter program will be very similar to the calibration program, so we'll get to that later when we put everything together.  For now, we will focus on the helper functions that will read in the data from the files the calibration program created.
+The pre-processing of the main coin counter program will be very similar to the calibration program, so we'll get to that later when we put everything together.  For now, we will focus on the helper functions that will read in the data from the files the calibration program created.
 
 **Step 7A: Function coinValues**
 This function reads the data from the file corresponding to the coin name passed as a parameter.  The function then computes several statistics, like the average R:B value, that can be later used by the user to customize coin identification. 
@@ -566,9 +566,113 @@ This function is to help with troubleshooting, and I do not actually call this f
 
         return inimg
 ```
+<div id = "P8"> </div>
 ### Step 8: Write main coin detection code program body
+In this portion, we'll replicate the pre-processing code from Steps 1-4, with a few differences in the constructor.  Using the helper functions from Step 7, we'll read in the data files and store the values in an numpy array for each coin.  Then, just like we did in the calibration portion, we'll extract the average RGB values and the radius for each detected blob.  The last step is to compare the data from the files to the detected blob, and determine what coin the blob is.  
 
 **Step 8A**
+First, we create variables to kep track of the number of each type of coin.
+```python
+	# Step 8A
+        # Create variables to store number of each type of coin
+        pennyNum = 0
+        nickelNum = 0
+        dimeNum = 0
+        quarterNum = 0
+```
+
+**Step 8B**
+We'll iterate though each detected blob and get the average RGB and radius values. Since most of this code is replicated, I won't include it again, but you can [download it off of github](https://github.com/Me-ghana/Coin-Counter). 
+
+**Step 8C**
+Next, we compare the values of the detected coins to the averaged values from the files. Below is the code doing the comparison.  Remember the radius data and R:G data is stored in the 0th and 1st element of the data array, respectively. It looks long, but it's just a series of comparison operations!
+
+
+```
+python
+    # Step 8C
+    # To distinguish between nickels and quarters, we rely solely on radius
+    # If the radius is greater than the average quarter radius, label this coin as a quarter
+    if (radius > quarterValues[0]):
+	cv2.putText(im_with_keypoints, "Q", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	quarterNum += 1
+    # Assign the coin type based on whichever coin radius is closest in value
+    elif (radius > nickelValues[0]):
+	# For example: 
+	# If the radius is greater than the average nickel radius, and closer to the average 
+	# nickel radius than quarter radius, label this as as nickel
+	if ((quarterValues[0] - radius) > (radius - nickelValues[0])):
+	    cv2.putText(im_with_keypoints, "N", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	    nickelNum += 1
+	# For example: 
+	# If the radius is greater than the average nickel radius,
+	# but closer to the average quarter radius, label as a quarter                
+	else:
+	    cv2.putText(im_with_keypoints, "Q", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	    quarterNum += 1
+
+
+    # To distinguish between nickels and pennies, we rely largely on the R:G ratio
+    # If you want, you can add in other dependencies, such as using the R:B ratio or the squared RGB values 
+    elif (radius > pennyValues[0]):
+	# If the average nickel and penny radius are within 15%, 
+	# they are too similar, so we rely solely on the R:G ratio
+	# Assign the coin type based on whichever coin has the closest R:G ratio value
+	if (abs(nickelValues[0]-pennyValues[0])/pennyValues[0] < 0.15):
+	    if ((abs(nickelValues[1]-ratioRG)) > (abs(pennyValues[1]-ratioRG)) ):
+		cv2.putText(im_with_keypoints, "P", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+		pennyNum += 1
+	    else:
+		cv2.putText(im_with_keypoints, "N", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+		nickelNum += 1
+	# If the average nickel and penny radius are greater than 15%, we rely on the radius
+	elif ((nickelValues[0] - radius) > (radius - pennyValues[0])):
+	    cv2.putText(im_with_keypoints, "P", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	    pennyNum += 1
+	else:
+	    cv2.putText(im_with_keypoints, "N", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	    nickelNum += 1
+
+    # If the radius is less the the average dime radius, label as dime
+    elif(radius < dimeValues[0]):
+	cv2.putText(im_with_keypoints, "D", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	dimeNum += 1
+
+    # To distinguish between dimes and pennies, we rely largely on the R:G ratio
+    elif (abs(dimeValues[0]-pennyValues[0])/pennyValues[0] < 0.15):
+	# If the average nickel and penny radius are within 15%, we rely solely on the R:G ratio
+	# Assign the coin type based on whichever coin has the closest R:G ratio value
+	if ((abs(pennyValues[1]-ratioRG)) > (abs(dimeValues[1]-ratioRG)) ):
+		cv2.putText(im_with_keypoints, "D", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+		dimeNum += 1
+	else:
+		cv2.putText(im_with_keypoints, "P", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+		pennyNum += 1
+
+    # If the average dime and penny radius are greater than 15%, we rely on the radius
+    elif ((radius - dimeValues[0]) > (pennyValues[0]-radius)):
+	cv2.putText(im_with_keypoints, "P", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	pennyNum += 1
+    else:
+	cv2.putText(im_with_keypoints, "D", center , cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+	dimeNum += 1
+```
+
+**Step 8D**
+We calculate the total sum and display it on screen.  And we're done!
+
+```python
+    	# Step 8D
+        # Compute the total value of all coins on screen
+        totalVal = pennyNum*0.01 + dimeNum*0.1 + nickelNum*0.05 + quarterNum*0.25
+
+        # Write out the total value and the number of each type of coin on the screen
+        cv2.putText(im_with_keypoints, "!Total Value of Coins: $" + str("%.2f" % totalVal), (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
+        cv2.putText(im_with_keypoints, "Pennies: " + str(pennyNum), (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
+        cv2.putText(im_with_keypoints, "Nickels: " + str(nickelNum), (20, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
+        cv2.putText(im_with_keypoints, "Dimes: " + str(dimeNum), (20, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
+        cv2.putText(im_with_keypoints, "Quarters: " + str(quarterNum), (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2)
+```
 
 ### Step 9: Count coins using the calibration and coin detection programs!
 
