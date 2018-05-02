@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Coin Counting with the JeVois in Python
+title: Coin Counting with the JeVois in Python - Programmer Tutorial
 ---
 
 This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV, like in the video below. 
