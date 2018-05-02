@@ -42,7 +42,7 @@ Here's an image I read in on my video stream.  I'm using a resolution of 640X480
 <p align="center">
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png" width = "450">
 </p>
-
+<div id = "P2"> </div>
 ### Step 2: Pre-process our image
 In Step 2, we get our first taste of OpenCV algorithms. This pre-processing was adapted from the [JeVois Python Dice Tutorial](http://jevois.org/tutorials/ProgrammerPythonDice.html).  
 
@@ -66,12 +66,14 @@ Let's continue our above code:
 
         # Step 2C
         # Filter noise
-        grayImage = cv2.GaussianBlur(grayImage, (5, 5), 0, 0)
+        grayImage = cv2.GaussianBlur(grayImage, (self.kernelWidth, self.kernelWidth), 0, 0)
         
 	# Step 2D
         # Apply automatic threshold
-        ret, grayImage = cv2.threshold(grayImage, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-        
+        ret, threshImage = cv2.threshold(grayImage, 0, 255, self.threshWhiteBackground)
+        # Determine if the background is white or black, and then apply appropriate threshold
+        whitePixels = cv2.countNonZero(threshImage)
+        blackPixels = height*width - whitePixels
         
 ```
 **Step 2A** 
@@ -81,39 +83,52 @@ In the first step of pre-processing, we use the OpenCV function convert color fu
 The .shape function will return only two values for a gray-scale image, the number of rows (height) and columns (width).  If you have a color image, .shape will return an additional channel value.
 
 **Step 2C**
-In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image.  This smoothing process recomputes a pixel's value by taking a weighted sum of the neighboring pixels.  Since we are using the Gaussian blur, spatially more distant pixels are weighted less.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's image smoothing operations.
+In order to remove noise from our image, we use a 5 X 5 kernel to apply a Gaussian Blur to the image. The size is specified in the constructor as a modifiable parameter, which we will see later. This smoothing process recomputes a pixel's value by taking a weighted sum of the neighboring pixels.  Since we are using the Gaussian blur, spatially more distant pixels are weighted less.  If you are not familiar with kernel convolution, [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/gausian_median_blur_bilateral_filter/gausian_median_blur_bilateral_filter.html) is a tutorial on OpenCV's image smoothing operations.
 
 **Step 2D**
-In this step, we make our gray-scale image black and white by choosing a threshold using Otsu's Method.  This algorithm finds the optimal threshold value in a bimodal image. In this example, we are using a white background and the coins are darker.  We want to coins to be black and the background to be white, so we use the inverse method provided by OpenCV.  This is because the simple blob detector typically detects dark spots as blobs.  (Later on, we can add a simple function to determine the background color to see if the inverse method should be used or not automatically.)
+In this step, we make our gray-scale image black and white by choosing a threshold using Otsu's Method. (This is set as another parameter in the constructor.)  This algorithm finds the optimal threshold value in a bimodal image. We compute wether we have more white or black pixels, to determiene what the background is.  If we have a black background, we use the thresholding inverse.  In this example, we are using a white background and the coins are darker.  We want the coins to be black and the background to be white.  This is because the simple blob detector typically detects dark spots as blobs.  We set the threshold method as a parameter, so if you choose to use another circle detection method that detects connected white pixels as circles, the thresholding can be easily flipped.  
 
 Here's what our image looks like after thresholding:
 <p align="center">
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/Coins2D.png" width = "450">
 </p>
-
+<div id = "P3"> </div>
 ### Step 3: Identify coins with blob detection
 We'll instantiate a simple blob detector in our constructor in order to identify coins in our image.  The simple blob detector algorithm works by:
    1. Thresholding the image into not just one, but several binary images
    2. Extracting connected pixels in each binary image with findContours 
-   3. Finally merging blobs that have centers close to one another. You can specify specific thresholds and filters to have increased control over how blobs should be extracted. 
+   3. Finally merging blobs that have centers close to one another. You can specify threshold and filter values to have increased control over how blobs should be extracted. 
 
 ``` python
 # Step 3A
 ## Constructor
     def __init__(self):
-        # Instantiate a circular blob detector:
-        params = cv2.SimpleBlobDetector_Params()
-        params.filterByCircularity = True
-        params.filterByArea = True
-        params.minArea = 200.0
-        self.detector = cv2.SimpleBlobDetector_create(params)
+          # Instantiate a circular blob detector:
+          params = cv2.SimpleBlobDetector_Params()
+          params.filterByCircularity = True
+          params.filterByArea = True
+          params.minArea = 200.0
+          self.detector = cv2.SimpleBlobDetector_create(params)
+
+          # Parameters: pre-processing 
+          self.threshWhiteBackground = cv2.THRESH_BINARY + cv2.THRESH_OTSU           # threshold type 
+          self.threshBlackBackground = cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU       # threshold type 
+          self.kernelWidth = 5                                                       # width for blur
+          self.kernelHeight = 5                                                      # height for blur
+
+          # Parameters: instructions and marker placement 
+          self.xVal = 80                               # x coordinate for first marker
+          self.yVal = 300                              # y coordinate for first marker
+          self.xDelta = 140                            # The distance between coins 
+          self.yDelta = -100                           # The distance between coins and above text
         
     def process(self, inframe, outframe):
         # Step 1A 
         # Step 2A
         # Step 2B
         # Step 2C
-        
+        # Step 2D
+	
         # Step 3B
         # Blob detection
         keypoints = self.detector.detect(invBack2)
@@ -163,12 +178,14 @@ However, we can see this does not give us as tight as a circle:
 ###### Alternative #2: Hough Circles
 Hough Circles is a specialization of the Hough Transform, and is a popular choice for detecting circles in images.  OpenCV uses the Hough Gradient Method for detection.  It is similar to the Hough Line Transform OpenCV operation.  The algorithm is explained [here](https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html) and a python tutorial for Hough Circles is provided by OpenCV [here](http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_houghcircles/py_houghcircles.html).
 
-We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles.  As you can see, it does a pretty good job and is even able to detect coins that are overlapping. However, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier.  If you using static images, or have a very steady video stream, Hough Circles is a great option. 
+We can see that we get better performance with Hough Circles than with the find contours algorithm.  You can choose to replace the circle detection code with Hough Circles if you want.  Here is the video of a final coin counting algorithm that uses Hough Circles. 
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=lPb4vpTNWcI"><img src="https://img.youtube.com/vi/lPb4vpTNWcI/0.jpg" alt="IMAGE ALT TEXT"></a>
 	<div align = "center"><figcaption>Click image watch video</figcaption></div>
 </div>
+
+As you can see, it does a pretty good job and is even able to detect coins that are overlapping.  In fact, if you watch the final video using blob detection at the top of this page, you'll notice that at 00:31 seconds, I place a quarter too closely to another coin, and have to move it away for it to be detected.  However, the size of the circles are undulating.  This may be due to the fan on the JeVois, which causes vibrations, which Hough Circles may be more sensitive to than other methods.  If we compare the final coin video with Simple Blob detection, we can see the coin outline is much steadier. If you using static images, or have a very steady video stream, Hough Circles is a great option. 
 
 ###### Alternative #2: The Watershed Algorithm
 The watershed algorithm is an intuitive method to identify circles.  The idea is that an image can be treated like a topographic map, with valleys separating low points.  If  the center of each coin is the low point in the map, we can fill the valley of each lowpoint with a unique color of water.  The boundaries of each coin are indicated where different water colors merge.  
@@ -181,17 +198,17 @@ The watershed algorithm is an intuitive method to identify circles.  The idea is
 </p>
 
 This is a great way to identify overlapping regions.  However, it  doesn't give us the tightest circles we've seen so far. This implemetnation of the watershed algorithm relies on a series of dilations and erosions to identify the low points, and this also reduces the accuracy of the final circle.    
-
+<div id = "P4"> </div>
 ### Step 4: Determine the heuristics and color space
 **Note: You do not need to do this step yourself if you merely want to use the algorithm.  However, if you're interested in finding your own heuristics, you can read this and follow the method I outline below**
 
 In this project, we are attempting to use basic image processing to identify U.S. Coins.  Two simple heuristics we can use are coin size and color.  First, let's check to see if it is possible to use these heuristics to tell U.S. Coins apart.
 
 **Step 4A**
-I wanted to create probability distrbiutions for coin color and size.  The most similar in size is the penny and the dime. I went to the bank and got about 400 of each type of coin (I also got a few weird looks from the bank tellers). If we can tell these two coins apart with a combination of size and color heuristics, we can be fairly confident that we can tell the nickel and quarter apart as well.  
+I wanted to create probability distrbiutions for coin color and size.  The most similar in size is the penny and the dime. If we can tell these two coins apart with a combination of size and color heuristics, we can be fairly confident that we can tell the nickel and quarter apart as well.
 
 **Step 4B**
-Let's first look at the radius data.  Using the JeVois, I used the "screen capture" to capture images of coins in the video screen.  I imaged about 30 coins at a time, and used the simple blob detector method to extract each coin area.  This method had a 96% accuracy of correctly finding the coin boundaries.  (Sometimes coins near the edge of the camera, and coins that I had not completely separated, were not identified correctly).  I recorded the radius, R, G, and B values for each coin.
+I went to the bank and got about 400 of each type of coin. Using the JeVois, I used the "screen capture" to capture images of coins in the video screen.  I imaged about 30 coins at a time, and used the simple blob detector method to extract each coin area.  This method had a 96% accuracy of correctly finding the coin boundaries.  (Sometimes coins near the edge of the camera, and coins that I had not completely separated, were not identified correctly).  I recorded the radius, R, G, and B values for each coin.
 
 <p align = "center">
 <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/PennyData.jpg" width = "600"><div align = "center"><figcaption>An example of an image used for penny data gathering</figcaption></div>
@@ -204,17 +221,17 @@ Let's first look at the radius data.  Using the JeVois, I used the "screen captu
 From this graph, it's clear we cannot rely on size alone to differentiate pennies from dimes.  
 
 **Step 4C**
-If you do a similar exercise with R, G, and B channels, you'll again find the overlap is quite large.  However, here's the distribution for the R:B ratio for pennies and dimes:
+If you do a similar exercise with R, G, and B channels, you'll again find the overlap is quite large.  However, here's the distribution for the R:G ratio for pennies and dimes:
 
 <p align = "center">
-<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chart2.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chartRG.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
 </p>
 
-We can see a clear separation between the distribution to R:B values in the dimes and the pennies!  We can assume this would also be true of pennies vs nickels or quarters. This is a good time to discuss RGB vs HSV.  HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value. I first tried HSV values for this exercise, but found the R:B separation was the best.  As a result, I'll proceed with working the in the RGB space.  
+We can see a clear separation between the distribution of R:G dime and the penny values!  We can assume this would also be true of pennies vs nickels or quarters. This is a good time to discuss RGB vs HSV.  HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value. I first tried HSV values for this exercise, but found the R:B separation was the best.  As a result, I'll proceed with working the in the RGB space.  
 
 
 With similar distributions, I was able to find adequate separation between (1) pennies and nickels radii, and (2) nickels and quarters radii.  While there was some overlap (<15%) in both cases, let's proceed and see how well our coin counter does.
-
+<div id = "P5"> </div>
 ### Step 5: Write calibration code body (optional)
 Since the size and the color will change depending on the distance the camera is mounted from the coins and the lighting conditions, we'll first create a calibration program that should always be run prior to the actual coin counting algorithm.  This is optional, because you can just go into the main program and manually set whatever parameters you want.  We'll direct the user to place a single penny, nickel, dime, and quarter in front of the camera in designated space using a red "x".  Once the coin is placed on the x, the coin's R:B value and radius will be written out to a file each time a new frame is loaded, and displayed on the screen. Once the values are written out above each coin, the user knows they have all the calibration data and can start running the main program.  As an example, I've also chosen to include the R:G values.  You can add as many heuristics as you want!  Here's what the final calibration product will look like:
 
