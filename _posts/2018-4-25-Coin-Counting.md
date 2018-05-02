@@ -226,7 +226,7 @@ From this graph, it's clear we cannot rely on size alone to differentiate pennie
 If you do a similar exercise with R, G, and B channels, you'll again find the overlap is quite large.  However, here's the distribution for the R:G ratio for pennies and dimes:
 
 <p align = "center">
-<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chartRG.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime Radii</figcaption></div>
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/chartRG.png" width = "450"><div align = "center"><figcaption>Probability Distribution for Penny and Dime R:G Ratio</figcaption></div>
 </p>
 
 We can see a clear separation between the distribution of R:G dime and the penny values!  We can assume this would also be true of pennies vs nickels or quarters. This is a good time to discuss RGB vs HSV.  HSV is often used in computer vision for color based operations since it maps specific colors to a hue channel, while keeping the saturation (how white the color is) and the value (how dark the channel is) in two other channels.  For example, in HSV, all types of red color, regardless of illumination, will have the same hue value. I first tried HSV values for this exercise, but found the R:B separation was the best.  As a result, I'll proceed with working the in the RGB space.  
@@ -701,7 +701,16 @@ E. After a few seconds, more than enough calibration data should be collected.  
 
 <div id = "PT"> </div>
 ### Trouble-Shooting
-If you've followed steps A-E and are getting too many errors, try modifying the Coin Counter file by adding the "addCoinStats" function, or simply look at your textfile data.  Here are some specific ways you may be able to improve your performance:
+If you've followed steps A-E and are getting too many errors, try modifying the Coin Counter file by adding the "addCoinStats" function, or simply look at your textfile data.  
+
+<p align = "center">
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/coinstats.png" width = "450"><div align = "center"><figcaption>An image with the Coin Statistics function added in </figcaption></div>
+</p>
+
+
+
+
+Here are some specific ways you may be able to improve your performance:
 * My quarters and nickels are too similar &/or my dimes and nickels are too similar!
   
   How close is your camera?  In this example, the camera was only 17cm away from the coins.  If your camera is too far away, it will not be able to detect the difference in size between the silver coins.
