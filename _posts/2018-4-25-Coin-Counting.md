@@ -704,7 +704,7 @@ E. After a few seconds, more than enough calibration data should be collected.  
 If you've followed steps A-E and are getting too many errors, try modifying the Coin Counter file by adding the "addCoinStats" function, or simply look at your textfile data.  
 
 <p align = "center">
-<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/coinstats.png" width = "450"><div align = "center"><figcaption>An image with the Coin Statistics function added in </figcaption></div>
+<img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/coinstats.jpg" width = "450"><div align = "center"><figcaption>An image with the Coin Statistics function added in </figcaption></div>
 </p>
 
 
