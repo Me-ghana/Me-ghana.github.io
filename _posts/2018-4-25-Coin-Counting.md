@@ -3,17 +3,15 @@ layout: post
 title: Coin Counting with the JeVois in Python
 ---
 
-This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV, like in the video below.   
+This tutorial will help explain how to identify U.S. coins from a video stream with Python and OpenCV, like in the video below. I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  The final code uses blob detection, but we'll explore other algorithms such as Hough Circles and the Watershed algorithm along the way.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, you can use any video stream you can extract images from.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=R4LO0sgfBmU"><img src="https://img.youtube.com/vi/R4LO0sgfBmU/0.jpg" ></a>
 	<div align = "center"><figcaption>Click image to watch video</figcaption></div>
 </div>
 
-I found the exercise of identifying U.S. coins to be a good introduction to some of the basic functions in OpenCV and some important computer vision algorithms.  The final code uses blob detection, but we'll explore other algorithms such as Hough Circles and the Watershed algorithm along the way.  While this post explains how to use OpenCV with the [JeVois](http://jevois.org/), a smart machine vision camera, you can use any video stream you can extract images from.  At the very least, you'll need to have OpenCV, numpy, and an image of some coins.
-
 My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have nine steps:
-1. Read in our image
+<a href = "P1">1. Read in our image</a>
 2. Pre-process our image 
 3. Identify coins with blob detection
 4. Determine the heuristics and color space 
@@ -23,9 +21,9 @@ My first goal was to see how well I could identify the four most common U.S. coi
 8. Write coin detection program program body
 9. Count coins using the calibration and coin detection programs!
 
-The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify which coin is which, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters you want manually in the coin counting program.)
+The big picture is we will be creating two programs, a calibration program and a coin counting program.  The calibration program will be run first and generate files with data about each coin type.  The main program will then open these files and use this data to identify coin types, and finally to find the total value of all the coins.  (Users can skip the calibration step, and write in the parameters manually in the coin counting program.)
 
-If you run into any issues, scroll down to check out some tourbleshooting tips!
+You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the Calibration and Counting program. If you run into any issues, scroll down to check out some tourbleshooting tips!
 
 ### Step 1: Read in our image
 Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
@@ -45,7 +43,7 @@ Here's an image I read in on my video stream.  I'm using a resolution of 640X480
   <img src= "https://raw.githubusercontent.com/Me-ghana/Coin-Counter/master/CoinImages/CoinStep1.png" width = "450">
 </p>
 
-### Step 2: Pre-process our image
+<div id = "P1">### Step 2: Pre-process our image</div>
 In Step 2, we get our first taste of OpenCV algorithms. This pre-processing was adapted from the [JeVois Python Dice Tutorial](http://jevois.org/tutorials/ProgrammerPythonDice.html).  
 
 Let's continue our above code:
