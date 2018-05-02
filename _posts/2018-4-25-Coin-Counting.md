@@ -11,7 +11,7 @@ This tutorial will help explain how to identify U.S. coins from a video stream w
 </div>
 
 My first goal was to see how well I could identify the four most common U.S. coins, the penny, nickel, dime, and quater, by detecting just the circle sizes and coin colors.  We'll have nine steps:
-1. Read in our image
+1. <a href = "https://me-ghana.github.io/Coin-Counting#P1">Read in our image</a>
 2. Pre-process our image 
 3. Identify coins with blob detection
 4. Determine the heuristics and color space 
@@ -25,7 +25,7 @@ The big picture is we will be creating two programs, a calibration program and a
 
 You can follow along by [downloading the code](https://github.com/Me-ghana/Coin-Counter) for both the Calibration and Counting program. If you run into any issues, scroll down to check out some tourbleshooting tips!
 
-### Step 1: Read in our image
+<div id = "P1">### Step 1: Read in our image</div>
 Step 1 is pretty simple if you are using the JeVois. If you want to learn more about the built-in JeVois functions, check out the helpful [JeVois Programming Tutorials](http://jevois.org/tutorials/ProgrammerTutorials.html).  If you are using a different video stream, read in a single image and store it as "img".
 
 Here's the following code for reading in our image.  
