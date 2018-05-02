@@ -749,5 +749,3 @@ This is a great project to learn about different computer vision algorithms, and
 2. Take the data we used earlier to create probability density functions and use them to train a convolution neural net. Use the CNN to identify coins instead of relying on color spaces and coin sizes.  The plus side to this is you can keep adding to your library of images, and start identifying coins from different countries.
 
 3. Explore other OpenCV functions, such as SIFT, for coin identification
-
-If you have any suggestions, please email them to meghanak@usc.edu
