@@ -105,7 +105,7 @@ Check that everything is working properly by using the files from the <a href = 
 
 <a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/deploy.prototxt" download>deploy.prototxt</a> 
 <a href = "http://dl.caffe.berkeleyvision.org/bvlc_reference_caffenet.caffemodel" download>bvlc_reference_caffenet.caffemodel </a>
-<a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/imagenet_mean.binaryproto" download>imagenet_mean.binaryproto</a><br>
+<a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/imagenet_mean.binaryproto" download>imagenet_mean.binaryproto</a>
 <a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/synset_words.txt" download>synset_words.txt</a> 
 <a href="https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/cat.jpg" download>cat.jpg</a> 
 
@@ -122,29 +122,55 @@ cat.jpg
 <img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/run.png">
 </p> 
 
-    When we attempt to use these files, we get an "input shape not found in caffemodel" error message.
-    <div class = "im-center">
-    <img  src = "inputshape.png"> 
-    </div> 
-    Currently, the input layer in the deploy_alexnet_places365.prototxt file looks like:
-    <div class = "im-center">
-    <img  src = "beforeLayerChange.png"> 
-    </div> 
-    We can fix this error by changing the input layer to this:   
-    <div class = "im-center">
-    <img  src = "afterLayerChange.png"> 
-    </div> 
-    When running this file, the next error we get is "root layer not found".
-    <div class = "im-center">
-    <img  src = "error1.png"> 
-    </div>
-    If we look at the source code, we see the error is thrown in layer_factory_impl.h Line 955, when the root is unable to find the layer node.  
-    Working backwards, this happens when the function reload_weight_from_caffe_protobinary() from the file layer_factory.h executes reload_weight_from_caffe_net().
-    This calls the function caffe_layer_vector() in the file layer_factory_impl.h. (Function arguments omitted for clarity.)  
-    Since we changed the prototxt file, we may need to recreate the binary file... more to come soon! (Please let me know if someone has a solution for this in the meantime) 
-    <br>
-    <br>
-    <br>
-    <br>
-    <font size = 2em>
+You should see the final output: <br>
+```c++
+---------- Prediction for examples/images/cat.jpg ----------
+0.3134 - "n02123045 tabby, tabby cat"
+0.2380 - "n02123159 tiger cat"
+0.1235 - "n02124075 Egyptian cat"
+0.1003 - "n02119022 red fox, Vulpes vulpes"
+0.0715 - "n02127052 lynx, catamount"
+```
+<p align = "center">    
+	<img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/results.png">
+</p> 
+
+You can have some fun testing CaffeNet's accuracy on different images.  The CaffeNet model has a <a href = "https://github.com/BVLC/caffe/tree/master/models/bvlc_reference_caffenet" target = "_blank">80% top-5 accuracy</a> on their validation set.  Take a look at their categories in their synset.txt file and try testing the model on various photos.  Here's how CaffeNet did on this photo of a sloth bear: 
+
+<p align = "center">
+    <img  src = "slothbear.png"> <img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/Sloth-Bear.png">
+</p> 
+
+
+**Step 6: Execution with Places365-CNN Model**
+The next step is to use the converter on the actual Caffe model we want to convert.  I am using <a href = "https://github.com/CSAILVision/places365" target = "_blank">MIT's Places365-CNN Caffe model</a>. There are several CNNs - we'll try out Alexnet. You will need the following files (from Places365 GitHub):
+
+<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/deploy_alexnet_places365.prototxt" download>deploy_alexnet_places365.prototxt</a> <br>
+<a href = "http://places2.csail.mit.edu/models_places365/googlenet_places365.caffemodel" download>alexnet_places365.caffemodel </a> <br>
+<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/places365CNN_mean.binaryproto" download>places365_mean.binaryproto</a><br>
+<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/labels_sunattribute.txt" download>labels_sunattribute.txt</a> <br>
+<a href="https://github.com/Me-ghana/old-site/tree/master/caffeConvert/beach.jpg" download>beach.jpg</a> <br>
+
+When we attempt to use these files, we get an "input shape not found in caffemodel" error message.
+<p align = "center">
+<img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/inputshape.png"> 
+</p>
+Currently, the input layer in the deploy_alexnet_places365.prototxt file looks like:
+<p align = "center">
+<img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/beforeLayerChange.png"> 
+</p> 
+We can fix this error by changing the input layer to this:   
+<p align = "center">
+<img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/afterLayerChange.png"> 
+</p> 
+
+When running this file, the next error we get is "root layer not found".
+<p align = "center">
+<img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/error1.png"> 
+</p>
+    
+
+If we look at the source code, we see the error is thrown in layer_factory_impl.h Line 955, when the root is unable to find the layer node.  Working backwards, this happens when the function reload_weight_from_caffe_protobinary() from the file layer_factory.h executes reload_weight_from_caffe_net(). This calls the function caffe_layer_vector() in the file layer_factory_impl.h. (Function arguments omitted for clarity.)  Since we changed the prototxt file, we may need to recreate the binary file... more to come! (Please let me know if someone has a solution for this in the meantime) 
+
+
 Any feedback to improve this material is much appreciated! Please email meghanak@usc.edu.
