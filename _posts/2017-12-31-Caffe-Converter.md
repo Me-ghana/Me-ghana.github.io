@@ -104,9 +104,13 @@ You can execute with the following command:
 Check that everything is working properly by using the files from the <a href = "https://github.com/BVLC/caffe/tree/master/examples/cpp_classification" target = "_blank">pre-trained CaffeNet model</a>.  When you install and compile Caffe, the following files will be automaticaly built in the "examples" folder.  However, if you would just like to download these files directly, click on the links below.  Save these files in your current working directory, the path name should end in tiny_dnn/io/caffe.
 
 <a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/deploy.prototxt" download>deploy.prototxt</a> 
+
 <a href = "http://dl.caffe.berkeleyvision.org/bvlc_reference_caffenet.caffemodel" download>bvlc_reference_caffenet.caffemodel </a>
+
 <a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/imagenet_mean.binaryproto" download>imagenet_mean.binaryproto</a>
+
 <a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/synset_words.txt" download>synset_words.txt</a> 
+
 <a href="https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/cat.jpg" download>cat.jpg</a> 
 
 ```c++
@@ -146,11 +150,15 @@ You can have some fun testing CaffeNet's accuracy on different images.  The Caff
 **Step 6: Execution with Places365-CNN Model**
 The next step is to use the converter on the actual Caffe model we want to convert.  I am using <a href = "https://github.com/CSAILVision/places365" target = "_blank">MIT's Places365-CNN Caffe model</a>. There are several CNNs - we'll try out Alexnet. You will need the following files (from Places365 GitHub):
 
-<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/deploy_alexnet_places365.prototxt" download>deploy_alexnet_places365.prototxt</a> <br>
-<a href = "http://places2.csail.mit.edu/models_places365/googlenet_places365.caffemodel" download>alexnet_places365.caffemodel </a> <br>
-<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/places365CNN_mean.binaryproto" download>places365_mean.binaryproto</a><br>
-<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/labels_sunattribute.txt" download>labels_sunattribute.txt</a> <br>
-<a href="https://github.com/Me-ghana/old-site/tree/master/caffeConvert/beach.jpg" download>beach.jpg</a> <br>
+<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/deploy_alexnet_places365.prototxt" download>deploy_alexnet_places365.prototxt</a> 
+
+<a href = "http://places2.csail.mit.edu/models_places365/googlenet_places365.caffemodel" download>alexnet_places365.caffemodel </a> 
+
+<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/places365CNN_mean.binaryproto" download>places365_mean.binaryproto</a>
+
+<a href = "https://github.com/Me-ghana/old-site/tree/master/caffeConvert/labels_sunattribute.txt" download>labels_sunattribute.txt</a> 
+
+<a href="https://github.com/Me-ghana/old-site/tree/master/caffeConvert/beach.jpg" download>beach.jpg</a> 
 
 When we attempt to use these files, we get an "input shape not found in caffemodel" error message.
 <p align = "center">
