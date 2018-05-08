@@ -83,15 +83,15 @@ Compile and link the following two files:
 using the following code (as a miniumum for Ubuntu). The "-I" flag adds include directories of header files.  Use the "-l" flag to link to the pthread and protobuf libraries.  
 ```c++
       g++ \
-      -I/<b>your path to tiny-dnn folder from home directory</b> \
+      -I/YOUR PATH TO TINY-DNN FOLDER FROM HOME DIRECTORY\
       -std=c++14  -o caffe_converter.bin \
       caffe.pb.cc \
-      <b>your path to caffe_converter.cpp from current working directory</b> \
+      <b>YOUR PATH TO CAFFE_CONVERTER.CPP FROM CURRENT WORKING DIRECTORY \
       -lprotobuf -lpthread 
 ```
 You should now have an executable **caffe_converter.bin**
 <div class = "im-center">
-    <img  src = "compile.png">
+    <img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/compile.png">
 </div> 
 
 **Step 5: Execution with CaffeNet Model**
