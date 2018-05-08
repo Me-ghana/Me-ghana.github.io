@@ -28,7 +28,7 @@ Follow the <a href="https://github.com/tiny-dnn/tiny-dnn/tree/master/examples/ca
 Install the <a href ="https://www.anaconda.com/download/#macos" target ="_blank">Anaconda</a> package manager with the default settings. I chose to use the Python 3.6 version since support for Python 2.7 will end in 2020. <!--As a result, we will have to make a few changes to Caffe models later on.--> You can check your installation by typing "python". You should have a Python 3 version using the Anaconda distribution. You can also check the list of installed packages you now have in your active environment by typing "conda list".
 
 <p align = "center">
-	<img src= "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/condaPython.png" width = "600">
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/condaPython.png">
 <!--		<div align = "center">
 			<figcaption></figcaption>
 		</div>-->
