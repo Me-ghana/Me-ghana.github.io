@@ -103,11 +103,11 @@ You can execute with the following command:
 ```
 Check that everything is working properly by using the files from the <a href = "https://github.com/BVLC/caffe/tree/master/examples/cpp_classification" target = "_blank">pre-trained CaffeNet model</a>.  When you install and compile Caffe, the following files will be automaticaly built in the "examples" folder.  However, if you would just like to download these files directly, click on the links below.  Save these files in your current working directory, the path name should end in tiny_dnn/io/caffe.
 
-	<a href = "deploy.prototxt" download>deploy.prototxt</a> 
-	<a href = "http://dl.caffe.berkeleyvision.org/bvlc_reference_caffenet.caffemodel" download>bvlc_reference_caffenet.caffemodel </a>
-	<a href = "./imagenet_mean.binaryproto" download>imagenet_mean.binaryproto</a><br>
-	<a href = "./sysnet_words.txt" download>synset_words.txt</a> 
-	<a href="./cat.jpg" download>cat.jpg</a> 
+<a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/deploy.prototxt" download>deploy.prototxt</a> 
+<a href = "http://dl.caffe.berkeleyvision.org/bvlc_reference_caffenet.caffemodel" download>bvlc_reference_caffenet.caffemodel </a>
+<a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/imagenet_mean.binaryproto" download>imagenet_mean.binaryproto</a><br>
+<a href = "https://github.com/Me-ghana/old-site/blob/master/caffeConvert/synset_words.txt" download>synset_words.txt</a> 
+<a href="https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/cat.jpg" download>cat.jpg</a> 
 
 ```c++
 ./caffe_converter.bin \ 
@@ -122,3 +122,29 @@ cat.jpg
 <img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/run.png">
 </p> 
 
+    When we attempt to use these files, we get an "input shape not found in caffemodel" error message.
+    <div class = "im-center">
+    <img  src = "inputshape.png"> 
+    </div> 
+    Currently, the input layer in the deploy_alexnet_places365.prototxt file looks like:
+    <div class = "im-center">
+    <img  src = "beforeLayerChange.png"> 
+    </div> 
+    We can fix this error by changing the input layer to this:   
+    <div class = "im-center">
+    <img  src = "afterLayerChange.png"> 
+    </div> 
+    When running this file, the next error we get is "root layer not found".
+    <div class = "im-center">
+    <img  src = "error1.png"> 
+    </div>
+    If we look at the source code, we see the error is thrown in layer_factory_impl.h Line 955, when the root is unable to find the layer node.  
+    Working backwards, this happens when the function reload_weight_from_caffe_protobinary() from the file layer_factory.h executes reload_weight_from_caffe_net().
+    This calls the function caffe_layer_vector() in the file layer_factory_impl.h. (Function arguments omitted for clarity.)  
+    Since we changed the prototxt file, we may need to recreate the binary file... more to come soon! (Please let me know if someone has a solution for this in the meantime) 
+    <br>
+    <br>
+    <br>
+    <br>
+    <font size = 2em>
+Any feedback to improve this material is much appreciated! Please email meghanak@usc.edu.
