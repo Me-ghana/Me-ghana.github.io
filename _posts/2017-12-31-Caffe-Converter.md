@@ -69,29 +69,29 @@ protoc caffe.proto --cpp_out=./
 If all goes well, this compilation will produce an implementation file (caffe.pb.cc) and a header file (caffe.pb.h). In the above code, the "-cpp_out" option specifies C++ classes.
 
 <p align = "center">
-<img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/protocCompile.png" >
+<img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/compile.png" >
 </p>
 
 
 **Step 4: Compilation**
-  Compile and link the following two files: 
-  <br>
-  <br>
-    <div class = "indent"><font size=2em>
-    1. tiny_dnn/io/caffe/caffe.pb.cc <br> 
-    2. examples/caffe_converter/caffe_converter.cpp</font>
-    </div>
-  <br>
-    using the following code (as a miniumum for Ubuntu). The "-I" flag adds include directories of header files.  Use the "-l" flag to link to the pthread and protobuf libraries.  
-    <code>
-      g++ \<br>
-      -I/<b>your path to tiny-dnn folder from home directory</b> \<br>
-      -std=c++14  -o caffe_converter.bin \<br>
-      caffe.pb.cc \<br>
-      <b>your path to caffe_converter.cpp from current working directory</b> \<br>
-      -lprotobuf -lpthread  <br>
-    </code>
-    You should now have an executable <b>caffe_converter.bin</b>
-    <div class = "im-center">
+
+Compile and link the following two files: 
+
+    1. tiny_dnn/io/caffe/caffe.pb.cc
+    2. examples/caffe_converter/caffe_converter.cpp
+
+using the following code (as a miniumum for Ubuntu). The "-I" flag adds include directories of header files.  Use the "-l" flag to link to the pthread and protobuf libraries.  
+```c++
+      g++ \
+      -I/<b>your path to tiny-dnn folder from home directory</b> \
+      -std=c++14  -o caffe_converter.bin \
+      caffe.pb.cc \
+      <b>your path to caffe_converter.cpp from current working directory</b> \
+      -lprotobuf -lpthread 
+```
+You should now have an executable **caffe_converter.bin**
+<div class = "im-center">
     <img  src = "compile.png">
 </div> 
+
+**Step 5: Execution with CaffeNet Model**
