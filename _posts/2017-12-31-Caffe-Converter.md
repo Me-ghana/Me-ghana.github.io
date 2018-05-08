@@ -1,7 +1,6 @@
 This tutorial will explain how to use the Caffe to Tiny-DNN Converter to identify the cat below
 <p align = "center">
-	<img src= "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/cat.jpg
-"  width = 300>
+	<img src= "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/cat.jpg"  width = 300>
 </p>
 
 The Caffe deep learning framework is often used in vision applications. However, if you have limited computation resources, you may want to use a different deep learning framework, such as tinyDNN. In my case, I would like to convert <a href = "https://github.com/CSAILVision/places365" target = "_blank"> MIT's Places365-CNN</a> caffemodel to tiny-dnn. This will allow MIT's model to run on the <a href = "http://jevois.org/" target="_blank">JeVois, a Smart Machine Vision Camera,</a> which has tiny-dnn support. I'll outline the steps I take below:
@@ -184,5 +183,7 @@ When running this file, the next error we get is "root layer not found".
 
 If we look at the source code, we see the error is thrown in layer_factory_impl.h Line 955, when the root is unable to find the layer node.  Working backwards, this happens when the function reload_weight_from_caffe_protobinary() from the file layer_factory.h executes reload_weight_from_caffe_net(). This calls the function caffe_layer_vector() in the file layer_factory_impl.h. (Function arguments omitted for clarity.)  Since we changed the prototxt file, we may need to recreate the binary file... more to come! (Please let me know if someone has a solution for this in the meantime) 
 
+**Update May 8th, 2018**
+It was suggested that we try adding a "data" input layer.  I'll see what happens when I add this and write an update!
 
 Any feedback to improve this material is much appreciated! Please email meghanak@usc.edu.
