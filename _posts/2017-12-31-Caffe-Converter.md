@@ -27,3 +27,35 @@ Install the <a href ="https://www.anaconda.com/download/#macos" target ="_blank"
 			<figcaption></figcaption>
 		</div>-->
 </p>
+
+**Step 2C: Protobuf Installation**
+Use Conda to <a href = "https://anaconda.org/anaconda/protobuf" target = "_blank">install</a> Google Protocol Buffers: 
+```c++ 
+conda install -c anaconda protobuf
+```
+You can check the version of your install with:
+```c++
+protoc --version
+```
+
+**Step 2D: OpenCV Installation**
+The last prerequiste you need now is OpenCV.  Use Conda to <a href = "https://anaconda.org/menpo/opencv" target = "_blank">install:</a>
+```c++
+conda install -c menpo opencv
+```
+You can check the version of your install with:
+```c++
+pkg-config --modversion opencv
+```
+
+**Step 3: Run Compiler Protoc**
+Change directories into the “caffe” folder and use the Protocol Buffer “protoc” command.  
+```c++
+cd tiny_dnn/io/caffe
+protoc caffe.proto --cpp_out=./
+```
+If all goes well, this compilation will produce an implementation file (caffe.pb.cc) and a header file (caffe.pb.h). In the above code, the "-cpp_out" option specifies C++ classes.
+
+<p align = "center">
+<img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/protocCompile.png" >
+</p>
