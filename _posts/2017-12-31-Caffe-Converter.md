@@ -4,9 +4,12 @@ This tutorial will explain how to use the Caffe to Tiny-DNN Converter
 
 
 **My System:**
+
 I chose to use Ubuntu 17.10 (Artful ardvark).  I assembled an Intel NUC Mini-PC so that I was not constrained by my virtual machine. 
 
+
 **Step 1: Setup**
+
  Follow the instructions on <a href = "https://github.com/tiny-dnn/tiny-dnn/wiki/A-beginner's-guide-to-build-examples" target = "_blank">"A beginner's guide to build examples"</a> from the tiny-dnn GitHub.
  ```c++
   git clone https://github.com/tiny-dnn/tiny-dnn.git
@@ -14,11 +17,14 @@ I chose to use Ubuntu 17.10 (Artful ardvark).  I assembled an Intel NUC Mini-PC 
   cmake -DBUILD_EXAMPLES=ON .
   make
 ```
+
 **Step 2A: Prerequisites**
 
 Follow the <a href="https://github.com/tiny-dnn/tiny-dnn/tree/master/examples/caffe_converter" target = "_blank">"Import Caffe Model to tiny-dnn"</a> instructions from the tiny-dnn caffe converter git repository.  Before you can continue, you will first need <a href="https://developers.google.com/protocol-buffers/" target ="_blank">Google protobuf</a> (a Google data structure similar to XML) and <a href ="https://opencv.org/" target = "_blank">OpenCV</a>.  I used the Conda package manager to install both.  Skip ahead to <a href="#3">Step 3</a> if you already have these prerequisites.  
 
+
 **Step 2B: Anaconda Installation**
+
 Install the <a href ="https://www.anaconda.com/download/#macos" target ="_blank">Anaconda</a> package manager with the default settings. I chose to use the Python 3.6 version since support for Python 2.7 will end in 2020. <!--As a result, we will have to make a few changes to Caffe models later on.--> You can check your installation by typing "python". You should have a Python 3 version using the Anaconda distribution. You can also check the list of installed packages you now have in your active environment by typing "conda list".
 
 <p align = "center">
@@ -28,7 +34,9 @@ Install the <a href ="https://www.anaconda.com/download/#macos" target ="_blank"
 		</div>-->
 </p>
 
+
 **Step 2C: Protobuf Installation**
+
 Use Conda to <a href = "https://anaconda.org/anaconda/protobuf" target = "_blank">install</a> Google Protocol Buffers: 
 ```c++ 
 conda install -c anaconda protobuf
@@ -38,7 +46,9 @@ You can check the version of your install with:
 protoc --version
 ```
 
+
 **Step 2D: OpenCV Installation**
+
 The last prerequiste you need now is OpenCV.  Use Conda to <a href = "https://anaconda.org/menpo/opencv" target = "_blank">install:</a>
 ```c++
 conda install -c menpo opencv
@@ -48,7 +58,9 @@ You can check the version of your install with:
 pkg-config --modversion opencv
 ```
 
+
 **Step 3: Run Compiler Protoc**
+
 Change directories into the “caffe” folder and use the Protocol Buffer “protoc” command.  
 ```c++
 cd tiny_dnn/io/caffe
@@ -59,3 +71,27 @@ If all goes well, this compilation will produce an implementation file (caffe.pb
 <p align = "center">
 <img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/protocCompile.png" >
 </p>
+
+
+**Step 4: Compilation**
+  Compile and link the following two files: 
+  <br>
+  <br>
+    <div class = "indent"><font size=2em>
+    1. tiny_dnn/io/caffe/caffe.pb.cc <br> 
+    2. examples/caffe_converter/caffe_converter.cpp</font>
+    </div>
+  <br>
+    using the following code (as a miniumum for Ubuntu). The "-I" flag adds include directories of header files.  Use the "-l" flag to link to the pthread and protobuf libraries.  
+    <code>
+      g++ \<br>
+      -I/<b>your path to tiny-dnn folder from home directory</b> \<br>
+      -std=c++14  -o caffe_converter.bin \<br>
+      caffe.pb.cc \<br>
+      <b>your path to caffe_converter.cpp from current working directory</b> \<br>
+      -lprotobuf -lpthread  <br>
+    </code>
+    You should now have an executable <b>caffe_converter.bin</b>
+    <div class = "im-center">
+    <img  src = "compile.png">
+</div> 
