@@ -123,8 +123,8 @@ cat.jpg
 </p> 
 
 You should see the final output: <br>
-```c++
----------- Prediction for examples/images/cat.jpg ----------
+```
+---------- Prediction values examples/images/cat.jpg ----------
 0.3134 - "n02123045 tabby, tabby cat"
 0.2380 - "n02123159 tiger cat"
 0.1235 - "n02124075 Egyptian cat"
@@ -138,7 +138,8 @@ You should see the final output: <br>
 You can have some fun testing CaffeNet's accuracy on different images.  The CaffeNet model has a <a href = "https://github.com/BVLC/caffe/tree/master/models/bvlc_reference_caffenet" target = "_blank">80% top-5 accuracy</a> on their validation set.  Take a look at their categories in their synset.txt file and try testing the model on various photos.  Here's how CaffeNet did on this photo of a sloth bear: 
 
 <p align = "center">
-    <img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/slothbear.png"> <img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/Sloth-Bear.png">
+    <img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/Sloth-Bear.png">
+	<img  src = "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/slothbear.png"> 
 </p> 
 
 
