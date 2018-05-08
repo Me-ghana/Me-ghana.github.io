@@ -4,14 +4,14 @@ This tutorial will explain how to use the Caffe to Tiny-DNN Converter
 
 
 **My System:**
-I chose to use Ubuntu 17.10 (Artful ardvark).  I <a href="IntelNucSetUp.html" target = "_blank">assembled an Intel NUC Mini-PC</a> so that I was not constrained by my virtual machine. 
+I chose to use Ubuntu 17.10 (Artful ardvark).  I assembled an Intel NUC Mini-PC so that I was not constrained by my virtual machine. 
 
 **Step 1: Setup**
  Follow the instructions on <a href = "https://github.com/tiny-dnn/tiny-dnn/wiki/A-beginner's-guide-to-build-examples" target = "_blank">"A beginner's guide to build examples"</a> from the tiny-dnn GitHub.
  ```c++
-  git clone https://github.com/tiny-dnn/tiny-dnn.git<br>
-  cd tiny-dnn<br>
-  cmake -DBUILD_EXAMPLES=ON .<br>
+  git clone https://github.com/tiny-dnn/tiny-dnn.git
+  cd tiny-dnn
+  cmake -DBUILD_EXAMPLES=ON .
   make
 ```
 **Step 2A: Prerequisites**
@@ -19,3 +19,11 @@ I chose to use Ubuntu 17.10 (Artful ardvark).  I <a href="IntelNucSetUp.html" ta
 Follow the <a href="https://github.com/tiny-dnn/tiny-dnn/tree/master/examples/caffe_converter" target = "_blank">"Import Caffe Model to tiny-dnn"</a> instructions from the tiny-dnn caffe converter git repository.  Before you can continue, you will first need <a href="https://developers.google.com/protocol-buffers/" target ="_blank">Google protobuf</a> (a Google data structure similar to XML) and <a href ="https://opencv.org/" target = "_blank">OpenCV</a>.  I used the Conda package manager to install both.  Skip ahead to <a href="#3">Step 3</a> if you already have these prerequisites.  
 
 **Step 2B: Anaconda Installation**
+Install the <a href ="https://www.anaconda.com/download/#macos" target ="_blank">Anaconda</a> package manager with the default settings. I chose to use the Python 3.6 version since support for Python 2.7 will end in 2020. <!--As a result, we will have to make a few changes to Caffe models later on.--> You can check your installation by typing "python". You should have a Python 3 version using the Anaconda distribution. You can also check the list of installed packages you now have in your active environment by typing "conda list".
+
+<p align = "center">
+	<img src= "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/condaPython.png" width = "600">
+<!--		<div align = "center">
+			<figcaption></figcaption>
+		</div>-->
+</p>
