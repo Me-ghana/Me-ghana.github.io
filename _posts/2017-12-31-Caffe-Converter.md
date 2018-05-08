@@ -1,7 +1,10 @@
-This tutorial will explain how to use the Caffe to Tiny-DNN Converter
+This tutorial will explain how to use the Caffe to Tiny-DNN Converter to identify the cat below
+<p align = "center">
+	<img src= "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/cat.jpg
+"  width = 300>
+</p>
 
- The Caffe deep learning framework is often used in vision applications. However, if you have limited computation resources, you may want to use a different deep learning framework, such as tinyDNN. In my case, I would like to convert <a href = "https://github.com/CSAILVision/places365" target = "_blank"> MIT's Places365-CNN</a> caffemodel to tiny-dnn. This will allow MIT's model to run on the <a href = "http://jevois.org/" target="_blank">JeVois, a Smart Machine Vision Camera,</a> which has tiny-dnn support. I'll outline the steps I take below:
-
+The Caffe deep learning framework is often used in vision applications. However, if you have limited computation resources, you may want to use a different deep learning framework, such as tinyDNN. In my case, I would like to convert <a href = "https://github.com/CSAILVision/places365" target = "_blank"> MIT's Places365-CNN</a> caffemodel to tiny-dnn. This will allow MIT's model to run on the <a href = "http://jevois.org/" target="_blank">JeVois, a Smart Machine Vision Camera,</a> which has tiny-dnn support. I'll outline the steps I take below:
 
 **My System:**
 
