@@ -77,8 +77,8 @@ If all goes well, this compilation will produce an implementation file (caffe.pb
 
 Compile and link the following two files: 
 
-    1. tiny_dnn/io/caffe/caffe.pb.cc
-    2. examples/caffe_converter/caffe_converter.cpp
+1. tiny_dnn/io/caffe/caffe.pb.cc
+2. examples/caffe_converter/caffe_converter.cpp
 
 using the following code (as a miniumum for Ubuntu). The "-I" flag adds include directories of header files.  Use the "-l" flag to link to the pthread and protobuf libraries.  
 ```c++
@@ -90,8 +90,35 @@ using the following code (as a miniumum for Ubuntu). The "-I" flag adds include 
       -lprotobuf -lpthread 
 ```
 You should now have an executable **caffe_converter.bin**
-<div class = "im-center">
+<p align = "center">
     <img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/compile.png">
-</div> 
+</p> 
+
 
 **Step 5: Execution with CaffeNet Model**
+
+You can execute with the following command:
+```c++
+/caffe_converter.bin [model-file] [trained-file] [mean-file] [label-file] [img-file]
+```
+Check that everything is working properly by using the files from the <a href = "https://github.com/BVLC/caffe/tree/master/examples/cpp_classification" target = "_blank">pre-trained CaffeNet model</a>.  When you install and compile Caffe, the following files will be automaticaly built in the "examples" folder.  However, if you would just like to download these files directly, click on the links below.  Save these files in your current working directory, the path name should end in tiny_dnn/io/caffe.
+
+	<a href = "deploy.prototxt" download>deploy.prototxt</a> 
+	<a href = "http://dl.caffe.berkeleyvision.org/bvlc_reference_caffenet.caffemodel" download>bvlc_reference_caffenet.caffemodel </a>
+	<a href = "./imagenet_mean.binaryproto" download>imagenet_mean.binaryproto</a><br>
+	<a href = "./sysnet_words.txt" download>synset_words.txt</a> 
+	<a href="./cat.jpg" download>cat.jpg</a> 
+
+```c++
+./caffe_converter.bin \ 
+deploy.prototxt \ 
+bvlc_reference_caffenet.caffemodel \ 
+imagenet_mean.binaryproto \ 
+synset_words.txt \ 
+cat.jpg 
+```
+
+<p align = "center">
+<img  src = "https://raw.githubusercontent.com/Me-ghana/Me-ghana.github.io/master/images/CaffeConverter/run.png">
+</p> 
+
