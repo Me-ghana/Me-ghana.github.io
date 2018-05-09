@@ -5,6 +5,7 @@ title: My Favorite New Yorker Articles
 
 A quick list so I remember some of the New Yorker articles I particularly enjoyed
 
+I love the New Yorker.  One of my favorite parts of my week is getting a new issue in the mail every Thursday.  I wanted to keep a running list of the articles that stood out to me, so I can re-visit them later.
 
 **2018**
 
