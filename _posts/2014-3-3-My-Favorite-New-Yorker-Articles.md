@@ -9,5 +9,8 @@ I love the New Yorker.  One of my favorite parts of my week is getting a new iss
 
 **2018**
 
+[Scott Pruitt's Dirty Politics](https://www.newyorker.com/magazine/2018/04/02/scott-pruitts-dirty-politics)
+  _How the Environmental Protection Agency became the fossil-fuel industry’s best friend._ April 2nd, 2018
+
 [The Spy Who Came Home](https://www.newyorker.com/magazine/2018/05/07/the-spy-who-came-home)
-_Why an expert in counterterrorism became a beat cop._ May 7th, 2018
+  _Why an expert in counterterrorism became a beat cop._ May 7th, 2018
