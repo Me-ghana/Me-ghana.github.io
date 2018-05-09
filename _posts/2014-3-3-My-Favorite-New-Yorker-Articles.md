@@ -9,3 +9,4 @@ A quick list so I remember some of the New Yorker articles I particularly enjoye
 **2018**
 
 [The Spy Who Came Home](https://www.newyorker.com/magazine/2018/05/07/the-spy-who-came-home)
+_Why an expert in counterterrorism became a beat cop._ May 7th, 2018
