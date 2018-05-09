@@ -10,10 +10,13 @@ I love the New Yorker.  One of my favorite parts of my week is getting a new iss
 **2018**
 
 [The Man Behind the Dossier](https://www.newyorker.com/magazine/2018/03/12/christopher-steele-the-man-behind-the-trump-dossier) <br>
-_An ex-spy's secret report on Russia and Trump_ March 12th, 2018
+_An ex-spy's secret report on Russia and Trump_ <br>
+March 12th, 2018
 
 [Scott Pruitt's Dirty Politics](https://www.newyorker.com/magazine/2018/04/02/scott-pruitts-dirty-politics) <br>
-_How the Environmental Protection Agency became the fossil-fuel industry’s best friend._ April 2nd, 2018
+_How the Environmental Protection Agency became the fossil-fuel industry’s best friend._ <br>
+April 2nd, 2018
 
 [The Spy Who Came Home](https://www.newyorker.com/magazine/2018/05/07/the-spy-who-came-home) <br>
-_Why an expert in counterterrorism became a beat cop._ May 7th, 2018
+_Why an expert in counterterrorism became a beat cop._ <br>
+May 7th, 2018
