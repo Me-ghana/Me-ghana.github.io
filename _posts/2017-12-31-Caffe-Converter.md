@@ -1,3 +1,8 @@
+---
+layout: post
+title: Caffe Converter
+---
+
 This tutorial will explain how to use the Caffe to Tiny-DNN Converter to identify the cat below
 <p align = "center">
 	<img src= "https://raw.githubusercontent.com/Me-ghana/old-site/master/caffeConvert/cat.jpg">
